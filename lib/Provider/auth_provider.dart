@@ -1,15 +1,22 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/age_height_weigth_info.dart';
+import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/bodyType_level.dart';
+import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/professional_signup.dart';
+import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/step_three_email_verify.dart';
 import 'package:secure_fitness_comp/utils/notficationsBar.dart';
 
 import '../Screens/AuthScreen/Signup/step_three_email_verified.dart';
 
 class AuthenProvider extends ChangeNotifier {
   final email = TextEditingController();
+  final logInEmail = TextEditingController();
   final password = TextEditingController();
+  final logInPassword = TextEditingController();
   final userName = TextEditingController();
   var age = TextEditingController();
   final weight = TextEditingController();
@@ -23,10 +30,31 @@ class AuthenProvider extends ChangeNotifier {
     // showMyWaitingModal(context: context);
     // try {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+    UserCredential? userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email.text,
         password: password.text,
       );
+      if(userCredential.user != null){
+        print("ok");
+        if(FirebaseAuth.instance.currentUser?.emailVerified == false){
+          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SignupStepThreeEmailVerify()), (route) => false);
+        }else{
+          await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).get().then((value) =>{
+           if(value.exists == false){
+             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => AgeHeightWeightInfo()), (route) => false)
+           }
+            else if(value.get("name") == null || value.get("name").toString().isEmpty){
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => AgeHeightWeightInfo()), (route) => false)
+            }else if(value.get("accountType") == "Professional" && value.get("profileImage") == null || value.get("profileImage").toString().isEmpty){
+        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ProfessionalSignupScreen()), (route) => false)
+      }else if(value.get("accountType") == "Enthusiast" && value.get("profileImage") == null || value.get("profileImage").toString().isEmpty){
+              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BodyTypeAndWorkoutLevel()), (route) => false)
+            }else{
+              Utils.flushBarSuccessMessage("Home Screen", context)
+            }
+          });
+        };
+      }
     } on FirebaseAuthMultiFactorException catch (e) {
       if (e.code == 'wrong-password') {
         // Check if the user has reached the maximum number of failed attempts
@@ -100,8 +128,7 @@ class AuthenProvider extends ChangeNotifier {
       );
       userSignup = userCredential.user;
       if(userSignup != null){
-
-
+        Navigator.push(context, MaterialPageRoute(builder: (context) => SignupStepThreeEmailVerify()));
       }else{
         print("Nothing");
       }
@@ -122,13 +149,16 @@ class AuthenProvider extends ChangeNotifier {
         // print("lastValue aleady $showIndicator");
       }
       else {
+        Navigator.pop(context);
         print('Error: ${e.code}');
+        Utils.flushBarErrorMessage('Error: ${e.code}',context);
         // showIndicator == true;
         notifyListeners();
       }
     } catch (e) {
       Navigator.pop(context);
       print('Error: $e');
+      Utils.flushBarErrorMessage('Error: $e',context);
       // showIndicator == true;
       notifyListeners();
     }
@@ -178,5 +208,12 @@ class AuthenProvider extends ChangeNotifier {
   endTimeFun({required DateTime dateTime}){
     endTime = dateTime;
     notifyListeners();
+  }
+  Future signupDataSendUpdateFun({required Map<String,dynamic> map,context}) async {
+    await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).update(map).then((value) {
+      return value;
+    }).onError((error, stackTrace) {
+    Utils.flushBarErrorMessage(error.toString(), context);
+  });
   }
 }
