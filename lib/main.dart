@@ -1,10 +1,10 @@
-
 import 'package:device_preview/device_preview.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:secure_fitness_comp/Provider/chatProvider.dart';
 import 'package:secure_fitness_comp/Screens/SplashScreen/splash_screen.dart';
 import 'package:secure_fitness_comp/resources/appColors.dart';
 import 'package:secure_fitness_comp/resources/fonts.dart';
@@ -26,9 +26,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await PushNotification().mSetupNotificationChannel();
 }
 
-
 Future<void> main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
@@ -57,9 +55,14 @@ class MyApp extends StatelessWidget {
         return MultiProvider(
           providers: [
             ChangeNotifierProvider<AuthenProvider>(
-                create: (context) => AuthenProvider(),),
+              create: (context) => AuthenProvider(),
+            ),
             ChangeNotifierProvider<ImagePickerProvider>(
-                create: (context) => ImagePickerProvider(),),
+              create: (context) => ImagePickerProvider(),
+            ),
+            ChangeNotifierProvider(
+              create: (context) => ChatProvider(),
+            ),
           ],
           child: MaterialApp(
             title: 'Fitness App',
@@ -74,7 +77,8 @@ class MyApp extends StatelessWidget {
               ),
               primarySwatch: MainColor.maincolor,
             ),
-            home: SplashScreen(),
+            initialRoute: RoutesName.EnthuHomeScreen,
+            onGenerateRoute: Routes.onGenerateRoute,
           ),
         );
       },

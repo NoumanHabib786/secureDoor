@@ -202,61 +202,70 @@ class _WorkOutScreenState extends State<WorkOutScreen> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return Container(
-                      height: 18.h,
-                      width: double.infinity,
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.asset(
-                              "${intermediateList[index].image}",
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
+                    return InkWell(
+                      onTap: () {
+                        RoutesName.push2(
+                            context,
+                            WorkOutDetails(
+                              workOuts: intermediateList[index],
+                            ));
+                      },
+                      child: Container(
+                        height: 18.h,
+                        width: double.infinity,
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.asset(
+                                "${intermediateList[index].image}",
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
                             ),
-                          ),
-                          Positioned(
-                              bottom: 30,
-                              left: 10,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${intermediateList[index].name}",
-                                    style: TextFonts.textW7(
-                                        color: Colors.white, fontSize: 15.sp),
-                                  ),
-                                  height(1),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "${intermediateList[index].time} min",
-                                        style: TextFonts.textSimple(
-                                          color: Colors.white,
+                            Positioned(
+                                bottom: 30,
+                                left: 10,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${intermediateList[index].name}",
+                                      style: TextFonts.textW7(
+                                          color: Colors.white, fontSize: 15.sp),
+                                    ),
+                                    height(1),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "${intermediateList[index].time} min",
+                                          style: TextFonts.textSimple(
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                      ),
-                                      width(2),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        radius: 1,
-                                      ),
-                                      width(2),
-                                      Text(
-                                        "${intermediateList[index].exercies} exercises",
-                                        style: TextFonts.textSimple(
-                                            color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ))
-                        ],
+                                        width(2),
+                                        CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          radius: 1,
+                                        ),
+                                        width(2),
+                                        Text(
+                                          "${intermediateList[index].exercies} exercises",
+                                          style: TextFonts.textSimple(
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ))
+                          ],
+                        ),
                       ),
                     );
                   },
@@ -271,61 +280,70 @@ class _WorkOutScreenState extends State<WorkOutScreen> {
                   shrinkWrap: true,
                   physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
-                    return Container(
-                      height: 18.h,
-                      width: double.infinity,
-                      margin: EdgeInsets.symmetric(vertical: 5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: Stack(
-                        children: [
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
-                            child: Image.asset(
-                              "${advanceList[index].image}",
-                              fit: BoxFit.cover,
-                              width: double.infinity,
-                              height: double.infinity,
+                    return InkWell(
+                      onTap: () {
+                        RoutesName.push2(
+                            context,
+                            WorkOutDetails(
+                              workOuts: advanceList[index],
+                            ));
+                      },
+                      child: Container(
+                        height: 18.h,
+                        width: double.infinity,
+                        margin: EdgeInsets.symmetric(vertical: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Stack(
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(12),
+                              child: Image.asset(
+                                "${advanceList[index].image}",
+                                fit: BoxFit.cover,
+                                width: double.infinity,
+                                height: double.infinity,
+                              ),
                             ),
-                          ),
-                          Positioned(
-                              bottom: 30,
-                              left: 10,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "${advanceList[index].name}",
-                                    style: TextFonts.textW7(
-                                        color: Colors.white, fontSize: 15.sp),
-                                  ),
-                                  height(1),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        "${advanceList[index].time} min",
-                                        style: TextFonts.textSimple(
-                                          color: Colors.white,
+                            Positioned(
+                                bottom: 30,
+                                left: 10,
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "${advanceList[index].name}",
+                                      style: TextFonts.textW7(
+                                          color: Colors.white, fontSize: 15.sp),
+                                    ),
+                                    height(1),
+                                    Row(
+                                      children: [
+                                        Text(
+                                          "${advanceList[index].time} min",
+                                          style: TextFonts.textSimple(
+                                            color: Colors.white,
+                                          ),
                                         ),
-                                      ),
-                                      width(2),
-                                      CircleAvatar(
-                                        backgroundColor: Colors.white,
-                                        radius: 1,
-                                      ),
-                                      width(2),
-                                      Text(
-                                        "${advanceList[index].exercies} exercises",
-                                        style: TextFonts.textSimple(
-                                            color: Colors.white),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ))
-                        ],
+                                        width(2),
+                                        CircleAvatar(
+                                          backgroundColor: Colors.white,
+                                          radius: 1,
+                                        ),
+                                        width(2),
+                                        Text(
+                                          "${advanceList[index].exercies} exercises",
+                                          style: TextFonts.textSimple(
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ))
+                          ],
+                        ),
                       ),
                     );
                   },

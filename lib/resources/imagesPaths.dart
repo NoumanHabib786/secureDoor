@@ -9,6 +9,17 @@ class ImagesPaths {
   static String onBoardImage = "assets/icons/onboard.png";
   static const fileUploadIcon = "assets/icons/file-upload.png";
   static const documentIcon = "assets/icons/document-attachment.png";
+  static var demo = "assets/images/demo.jpg";
+  static var workOutChest = "assets/images/workOut1.jpg";
+  static var workOutAbs = "assets/images/workOutAbs.jpg";
+  static var workOutArm = "assets/images/workOutArm.jpg";
+  static var workOutLegs = "assets/images/workOutLegs.jpg";
+  static var workOutshoulder = "assets/images/workOutshoulder.jpg";
+  static var bench_sit_up = "assets/images/bench-sit-up.jpeg";
+  static var pulling_up = "assets/images/pulling-up.jpeg";
+  static var push = "assets/images/push.jpeg";
+  static var push_up = "assets/images/push-up.jpeg";
+  static var sit_up = "assets/images/sit-up.jpeg";
 
 
 }

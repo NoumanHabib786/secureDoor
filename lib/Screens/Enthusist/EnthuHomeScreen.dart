@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:secure_fitness_comp/Screens/Enthusist/workOut/workOutScreen.dart';
+import 'package:secure_fitness_comp/resources/components/appbar.dart';
 import 'package:secure_fitness_comp/resources/imagesPaths.dart';
 import 'package:sizer/sizer.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -10,6 +12,7 @@ import '../../resources/fonts.dart';
 import '../../resources/height_width.dart';
 import '../../utils/Routes/RoutesName.dart';
 import 'EnuthuDrawer.dart';
+import 'chat/chatScreen.dart';
 import 'legendWidget.dart';
 
 class EnthuHomeScreen extends StatefulWidget {
@@ -20,16 +23,6 @@ class EnthuHomeScreen extends StatefulWidget {
 }
 
 class _EnthuHomeScreenState extends State<EnthuHomeScreen> {
-  String getGreeting() {
-    var hour = DateTime.now().hour;
-    if (hour < 12) {
-      return 'Good Morning';
-    } else if (hour < 18) {
-      return 'Good Afternoon';
-    } else {
-      return 'Good Evening';
-    }
-  }
 
   // WorkOut Plan 2: Meal Plan , Nuration Tracking , Progress Traking , Activity Tracking
 
@@ -39,58 +32,21 @@ class _EnthuHomeScreenState extends State<EnthuHomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      appBar: app_bar(
+          context: context, title: "Fitness", withoutLeading: Icon(Icons.menu)),
       drawer: const EnthuDrawer(),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            padding:
-                EdgeInsets.only(left: 2.h, right: 2.h, top: 7.h, bottom: 2.h),
-            // decoration:const  BoxDecoration(
-            //     color: AppColors.mainColor,
-            //     borderRadius: BorderRadius.only(
-            //         bottomRight: Radius.circular(15),
-            //         bottomLeft: Radius.circular(15))),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                InkWell(
-                  onTap: () {},
-                  child: const Icon(
-                    Icons.menu,
-                    color: Colors.black,
-                  ),
-                ),
-                width(4),
-                Expanded(
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      height(.4),
-                      Text(getGreeting(),
-                          style:
-                              TextFonts.textSimple(fontSize: 14.sp) //TextStyle
-                          ),
-                      width(1),
-                      Expanded(
-                        child: Text("Secure Door",
-                            style: TextFonts.textW6(fontSize: 14.sp) //TextStyle
-                            ),
-                      ),
-                    ],
-                  ),
-                ),
-                InkWell(
-                  onTap: () {},
-                  child: Icon(
-                    FontAwesome.bell,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
+          height(2),
+          Padding(
+            padding:  EdgeInsets.only(left: 18),
+            child: Text(
+              "Hi , Secure Door",
+              style: MessageFonts.notifyW5(fontSize: 15.sp),
             ),
           ),
-          height(5),
+          height(2),
           Expanded(
               child: SingleChildScrollView(
             child: Padding(
@@ -161,7 +117,7 @@ class _EnthuHomeScreenState extends State<EnthuHomeScreen> {
                     children: [
                       Expanded(
                         child: InkWell(
-                          onTap: (){
+                          onTap: () {
                             RoutesName.push(context, RoutesName.WorkOutScreen);
                           },
                           child: Container(
@@ -273,94 +229,118 @@ class _EnthuHomeScreenState extends State<EnthuHomeScreen> {
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 3.0),
-                          child: Card(
-                            elevation: 0,
-                            color: Colors.grey.shade100,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
-                            child: Container(
-                                width: 85.w,
-                                padding: EdgeInsets.all(2.h),
-                                decoration: BoxDecoration(
-                                    // color: Colors.grey.shade300,
-                                    borderRadius: BorderRadius.circular(12)),
-                                child: Column(
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                            height: 5.h,
-                                            width: 10.w,
-                                            clipBehavior: Clip.antiAlias,
-                                            decoration: BoxDecoration(
-                                                shape: BoxShape.circle),
-                                            child: Image.asset(
-                                              ImagesPaths.demo,
-                                              fit: BoxFit.cover,
-                                            )
-                                            // ImagesFolder
-                                            //     .getImage(
-                                            //     url:
-                                            //     "${ImagesFolder.therapist}${therapist.image}"),
+                          child: InkWell(
+                            onTap: () {
+                              bool isProfessional = false;
+                              RoutesName.push2(
+                                  context,
+                                  ChatScreen(
+                                    enthuIncrement: 0,
+                                    profIncrement: 0,
+                                    profName: "Secure",
+                                    profImage: "image",
+                                    profId: "2",
+                                    enthuName: "Nouman",
+                                    enthuId: "1",
+                                    role: isProfessional
+                                        ? "professional"
+                                        : "enthusist",
+                                  ));
+                              isProfessional = true;
+                            },
+                            child: Card(
+                              elevation: 0,
+                              color: Colors.grey.shade100,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Container(
+                                  width: 85.w,
+                                  padding: EdgeInsets.all(2.h),
+                                  decoration: BoxDecoration(
+                                      // color: Colors.grey.shade300,
+                                      borderRadius: BorderRadius.circular(12)),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Container(
+                                              height: 5.h,
+                                              width: 10.w,
+                                              clipBehavior: Clip.antiAlias,
+                                              decoration: BoxDecoration(
+                                                  shape: BoxShape.circle),
+                                              child: Image.asset(
+                                                ImagesPaths.demo,
+                                                fit: BoxFit.cover,
+                                              )
+                                              // ImagesFolder
+                                              //     .getImage(
+                                              //     url:
+                                              //     "${ImagesFolder.therapist}${therapist.image}"),
+                                              ),
+                                          width(2),
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                height(1),
+                                                Text(
+                                                  "Secure Door",
+                                                  style:
+                                                      MessageFonts.notifyW6(),
+                                                ),
+                                                height(0.5),
+                                                Text(
+                                                  "Professional in dummy",
+                                                  style: MessageFonts
+                                                      .notifySimple(),
+                                                ),
+                                              ],
                                             ),
-                                        width(2),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              height(1),
-                                              Text(
-                                                "Secure Door",
-                                                style: MessageFonts.notifyW6(),
-                                              ),
-                                              height(0.5),
-                                              Text(
-                                                "Professional in dummy",
-                                                style:
-                                                    MessageFonts.notifySimple(),
-                                              ),
-                                            ],
                                           ),
-                                        ),
-                                        width(2),
-                                        Row(
-                                          children: [
-                                            Text("5.0",style: MessageFonts.notifyW5(),),
-                                            width(1),
-                                            Icon(
-                                              CupertinoIcons.star_fill,
-                                              color: AppColors.orangeDark,
-                                              size: 2.3.h,
-                                            )
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    height(2),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "Experience",
-                                          style: MessageFonts.notifySimple(
-                                              fontSize: 10.sp,
-                                              color: Colors.black),
-                                        ),
-                                        Text(
-                                          "2 years",
-                                          style: MessageFonts.notifyW6(
-                                              fontSize: 12.sp,
-                                              color: Colors.black),
-                                        ),
-
-                                      ],
-                                    ),
-                                    height(2),
-                                  ],
-                                )),
+                                          width(2),
+                                          Row(
+                                            children: [
+                                              Text(
+                                                "5.0",
+                                                style: MessageFonts.notifyW5(),
+                                              ),
+                                              width(1),
+                                              Icon(
+                                                CupertinoIcons.star_fill,
+                                                color: AppColors.orangeDark,
+                                                size: 2.3.h,
+                                              )
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                      height(2),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(
+                                            "Experience",
+                                            style: MessageFonts.notifySimple(
+                                                fontSize: 10.sp,
+                                                color: Colors.black),
+                                          ),
+                                          Text(
+                                            "2 years",
+                                            style: MessageFonts.notifyW6(
+                                                fontSize: 12.sp,
+                                                color: Colors.black),
+                                          ),
+                                        ],
+                                      ),
+                                      height(2),
+                                    ],
+                                  )),
+                            ),
                           ),
                         );
                       },

@@ -360,7 +360,7 @@ class PushNotification {
         Uri.parse('https://fcm.googleapis.com/fcm/send'),
         headers: <String, String>{
           'Content-Type': 'application/json',
-          'Authorization': 'key=AAAAD5nG7Xk:APA91bEBTs_HHaUMD0pgkA3RY4GrBWEHP54iip33OMDUny1SXijPlnQS0-9FUWhw_JiKZr5ce_6fCr_BvflpSpwsuqTcO96sVDuvVahIc_wprtcbs7Q254ADF2J11flIi8inj7XQzGhD',
+          'Authorization': 'key=AAAASxUtBJI:APA91bEDhkEZyVVXMGyt0Ym6RTB-_9zjqH4mxz7njO9BFwxlfwGw3EObOOrUpy6-CfmLbW_pkHmkuiXzM1fn9IRvNSdMOaTEjmyVwL9oDiWf9ZA22Fnvazy_6ZPD_6sx3sG9vzVb0V24',
         },
         body: constructFCMPayload(token, title, message, clickAction, topic),
       );
