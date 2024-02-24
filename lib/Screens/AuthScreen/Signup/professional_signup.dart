@@ -1,12 +1,16 @@
 
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:secure_fitness_comp/resources/imagesPaths.dart';
+import 'package:secure_fitness_comp/utils/notficationsBar.dart';
 
 import '../../../Provider/auth_provider.dart';
 import '../../../Provider/image_picker_provider.dart';
@@ -25,6 +29,18 @@ class ProfessionalSignupScreen extends StatefulWidget {
 class _ProfessionalSignupScreenState extends State<ProfessionalSignupScreen> {
   File? userImage;
   String? selectedSpecializationValue;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final provider = Provider.of<AuthenProvider>(context,listen: false);
+      setState(() {
+        provider.startTime = null;
+        provider.endTime = null;
+      });
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final scrSize = MediaQuery.of(context).size;
@@ -304,131 +320,230 @@ class _ProfessionalSignupScreenState extends State<ProfessionalSignupScreen> {
                            style: txtStyle14AndBold,
                          ),
                          sizeHeight15,
-                         Row(
-                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                           children: [
-                             // Container(
-                             //   width: 100,
-                             //   child: ,
-                             // ),
-                             Text(
-                               'Time: ',
-                               // style: TextStyleUtil.textStyleBeforeLoginRaqiBook(
-                               //     context),
-                             ),
-                             Column(
-                               children: [
-                                 GestureDetector(
-                                   onTap: () {
-                                     DatePicker.showTime12hPicker(
-                                       context,
-                                       showTitleActions: true,
-                                       onChanged: (date) {
-                                         print('change $date in time zone ' +
-                                             date.timeZoneOffset.inHours
-                                                 .toString());
-                                       },
-                                       onConfirm: (date) {
-                                         // model.updateSelectedTimeFrom(date);
-                                         print('confirm $date');
-                                       },
-                                       currentTime: DateTime.now(),
-                                     );
-                                   },
-                                   child: Container(
-                                     // width: 80,
-                                     padding: EdgeInsetsDirectional.only(
-                                         top: 6, end: 20, start: 20, bottom: 6),
-                                     decoration: BoxDecoration(
-                                         borderRadius: BorderRadius.circular(4),
-                                         color: Colors.grey
-                                         // AppColors.instance.backGroundColor
-                                         ),
-                                     child: Center(
-                                         child: Text(
-                                           provider.endTime != null?
-                                               DateFormat().add_Hm().format(provider.endTime!)
-                                           // model.showTimeFrom
-                                           //     ? AppUtils.showFormattedTime(
-                                           //     model.selectedTimeFrom!)
-                                               :
-                                         "From",
-                                           // model.selectedTime.hour.toString() +
-                                           //     ":" +
-                                           //     model.selectedTime.minute.toString(),
-                                           ///
-                                           // style: model.showErrorMessage
-                                           //     ? TextStyleUtil.errorTextStyle(
-                                           //     context)
-                                           //     : TextStyleUtil
-                                           //     .textStyleBeforeLoginRaqiBook(
-                                           //     context),
-                                         )),
-                                   ),
-                                 ),
-                                 // if (model.showErrorMessage)
-                                 //   Text("From time can\'t be empty",
-                                 //       style: TextStyleUtil.errorTextStyle(context)),
-                               ],
-                             ),
-                             Column(
-                               children: [
-                                 GestureDetector(
-                                   onTap: () {
-                                     DatePicker.showTime12hPicker(
-                                       context,
-                                       showTitleActions: true,
-                                       onChanged: (date) {
-                                         print('change $date in time zone ' +
-                                             date.timeZoneOffset.inHours
-                                                 .toString());
-                                       },
-                                       onConfirm: (date) {
-                                         provider.startTimeFun(dateTime: date);
-                                         // model.updateSelectedTimeTo(date);
-                                         print('confirm $date');
-                                       },
-                                       currentTime: DateTime.now(),
-                                     );
-                                   },
-                                   child: Container(
-                                     // width: 80,
-                                     padding: EdgeInsetsDirectional.only(
-                                         top: 6, end: 20, start: 20, bottom: 6),
-                                     decoration: BoxDecoration(
-                                         borderRadius: BorderRadius.circular(4),
-                                         color: Colors.grey,
-                                         // AppColors.instance.backGroundColor
+                         Padding(
+                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                           child: Row(
+                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                             children: [
+                               // Container(
+                               //   width: 100,
+                               //   child: ,
+                               // ),
+
+                               Column(
+                                 children: [
+                                   GestureDetector(
+                                     onTap: () {
+                                       DatePicker.showTime12hPicker(
+                                         context,
+                                         showTitleActions: true,
+                                         onChanged: (date) {
+                                           print('change $date in time zone ' +
+                                               date.timeZoneOffset.inHours
+                                                   .toString());
+                                         },
+                                         onConfirm: (date) {
+                                           // model.updateSelectedTimeFrom(date);
+                                           provider.endTimeFun(dateTime: date);
+                                           print('confirm $date');
+                                         },
+                                         currentTime: DateTime.now(),
+                                       );
+                                     },
+                                     child: Container(
+                                       // width: 80,
+                                       padding: EdgeInsetsDirectional.only(
+                                           top: 15, end: 25, start: 25, bottom: 15),
+                                       decoration: BoxDecoration(
+                                           borderRadius: BorderRadius.circular(4),
+                                           color: Colors.grey.shade100
+                                           // AppColors.instance.backGroundColor
+                                           ),
+                                       child: Center(
+                                           child: Text(
+                                             provider.endTime != null?
+                                                 DateFormat().add_Hm().format(provider.endTime!)
+                                             // model.showTimeFrom
+                                             //     ? AppUtils.showFormattedTime(
+                                             //     model.selectedTimeFrom!)
+                                                 :
+                                           "Start Time",
+                                             // model.selectedTime.hour.toString() +
+                                             //     ":" +
+                                             //     model.selectedTime.minute.toString(),
+                                             ///
+                                             // style: model.showErrorMessage
+                                             //     ? TextStyleUtil.errorTextStyle(
+                                             //     context)
+                                             //     : TextStyleUtil
+                                             //     .textStyleBeforeLoginRaqiBook(
+                                             //     context),
+                                           )),
                                      ),
-                                     child: Center(
-                                         child: Text(
-                                           provider.startTime != null
-                                               ? DateFormat().add_Hm().format(provider.startTime!)
-                                               :
-                                         "To",
-                                           // model.selectedTime.hour.toString() +
-                                           //     ":" +
-                                           //     model.selectedTime.minute.toString(),
-                                           // style: model.showErrorMessage
-                                           //     ? TextStyleUtil.errorTextStyle(
-                                           //     context)
-                                           //     : TextStyleUtil
-                                           //     .textStyleBeforeLoginRaqiBook(
-                                           //     context),
-                                         )),
                                    ),
-                                 ),
-                               ],
-                             ),
-                           ],
+                                   // if (model.showErrorMessage)
+                                   //   Text("From time can\'t be empty",
+                                   //       style: TextStyleUtil.errorTextStyle(context)),
+                                 ],
+                               ),
+                               Column(
+                                 children: [
+                                   GestureDetector(
+                                     onTap: () {
+                                       DatePicker.showTime12hPicker(
+                                         context,
+                                         showTitleActions: true,
+                                         onChanged: (date) {
+                                           print('change $date in time zone ' +
+                                               date.timeZoneOffset.inHours
+                                                   .toString());
+                                         },
+                                         onConfirm: (date) {
+                                           if(date.millisecondsSinceEpoch > provider.startTime!.millisecondsSinceEpoch){
+                                           provider.startTimeFun(dateTime: date);
+                                           print('confirm $date');
+                                           }else{
+                                             Utils.flushBarErrorMessage("End time is less than start time.", context);
+                                           }
+                                           // model.updateSelectedTimeTo(date);
+                                         },
+                                         currentTime: DateTime.now(),
+                                       );
+                                     },
+                                     child: Container(
+                                       // width: 80,
+                                       padding: EdgeInsetsDirectional.only(
+                                           top: 15, end: 25, start: 25, bottom: 15),
+                                       decoration: BoxDecoration(
+                                           borderRadius: BorderRadius.circular(4),
+                                           color: Colors.grey.shade100
+                                         // AppColors.instance.backGroundColor
+                                       ),
+                                       child: Center(
+                                           child: Text(
+                                             provider.startTime != null
+                                                 ? DateFormat().add_Hm().format(provider.startTime!)
+                                                 :
+                                           "End Time",
+                                             // model.selectedTime.hour.toString() +
+                                             //     ":" +
+                                             //     model.selectedTime.minute.toString(),
+                                             // style: model.showErrorMessage
+                                             //     ? TextStyleUtil.errorTextStyle(
+                                             //     context)
+                                             //     : TextStyleUtil
+                                             //     .textStyleBeforeLoginRaqiBook(
+                                             //     context),
+                                           )),
+                                     ),
+                                   ),
+                                 ],
+                               ),
+                             ],
+                           ),
                          ),
+                         sizeHeight20,
                          Align(
                            alignment: Alignment.topCenter,
                            child: Container(
                              width: scrSize.width*0.8,
                              child: button(
                                context: context,
-                               onTap: (){
+                               onTap: () async {
+                                 if(
+                                 selectedSpecializationValue != null
+                                     &&
+                                 userImage != null
+                                     &&
+                                     imagePicker.selectedFiles.isNotEmpty
+                                     &&
+                                     provider.startTime != null
+                                     &&
+                                     provider.endTime != null
+
+                                 ){
+                                   showMyWaitingModal(context: context);
+                                   List<File> files = imagePicker.selectedFiles.map((platformFile) => File(platformFile.path!)).toList();
+                                   List<String> certificateList = [];
+                                   if(files.isNotEmpty){
+                                     final FirebaseStorage _storage =
+                                         FirebaseStorage.instance;
+
+                                     try {
+                                       if (userImage != null) {
+                                         // Generate a unique file name for the image
+                                         String fileName = DateTime.now()
+                                             .millisecondsSinceEpoch
+                                             .toString() +
+                                             '.png';
+
+                                         // Get the storage reference
+                                         Reference reference = _storage
+                                             .ref()
+                                             .child('users_images')
+                                             .child(FirebaseAuth
+                                             .instance.currentUser!.uid)
+                                             .child(fileName);
+
+                                         // final imagePath = provider.getImageSignUp != null? provider.getImageSignUp! : NetworkImage(widget.googleAuthImageUrl!);
+                                         // Upload the file to Firebase Storage
+                                         TaskSnapshot taskSnapshot =
+                                         await reference.putFile(userImage!);
+
+                                         // Get the image URL from the uploaded image
+                                         String userImageUrl = await taskSnapshot.ref
+                                             .getDownloadURL();
+                                         for(int i=0; i<files.length; i++){
+                                           String fileName = DateTime.now()
+                                               .millisecondsSinceEpoch
+                                               .toString() +
+                                               '.png';
+
+                                           // Get the storage reference
+                                           Reference reference = _storage
+                                               .ref()
+                                               .child('users_images')
+                                               .child(FirebaseAuth
+                                               .instance.currentUser!.uid)
+                                               .child(fileName);
+
+                                           // final imagePath = provider.getImageSignUp != null? provider.getImageSignUp! : NetworkImage(widget.googleAuthImageUrl!);
+                                           // Upload the file to Firebase Storage
+                                           TaskSnapshot taskSnapshot =
+                                           await reference.putFile(files[i]);
+
+                                           // Get the image URL from the uploaded image
+                                           await taskSnapshot.ref
+                                               .getDownloadURL().then((value) {
+                                                 setState(() {
+                                                   certificateList.add(value);
+                                                 });
+                                           }).onError((error, stackTrace) {
+                                             Utils.flushBarErrorMessage(error.toString(), context);
+                                           print(error);
+                                           });
+                                         }
+                                       }
+                                       if(imagePicker.selectedFiles.length == certificateList.length){
+                                         await provider.signupDataSendUpdateFun(map: {
+                                           "certificateImageUrls" : certificateList,
+                                           "userImage" : userImage,
+                                           "startTime" : provider.startTime,
+                                           "endTime" : provider.endTime,
+                                           "specialization" : selectedSpecializationValue,
+                                         }).then((value) {
+                                           Utils.flushBarSuccessMessage("All Done", context);
+                                         });
+                                       }
+                                     } catch (e) {
+                                       print(
+                                           'Error uploading image to Firebase: ${e.toString()}');
+                                     }
+
+                                  }
+                                 }else{
+                                   Utils.flushBarErrorMessage("Please select all fields.", context);
+                                 }
                                  // Navigator.push(context, MaterialPageRoute(builder: (context) => SignupStepThreeEmailVerify()));
                                },btnText: "Continue",),
                            ),

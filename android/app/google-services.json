@@ -1,28 +1,76 @@
 {
   "project_info": {
-    "project_number": "763072463166",
-    "project_id": "fitnessapp-4b561",
-    "storage_bucket": "fitnessapp-4b561.appspot.com"
+    "project_number": "322477819026",
+    "project_id": "freeearn-4f65a",
+    "storage_bucket": "freeearn-4f65a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:763072463166:android:1fdeb7d3b6efe4a6622c6f",
+        "mobilesdk_app_id": "1:322477819026:android:d763c2a16af63edfd6124b",
         "android_client_info": {
           "package_name": "com.secure.secure_fitness_comp"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "322477819026-2uaggu0ch1fvs3rgqr2anq5pqpa70l8k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyB_SPCeWg5w-_xqdpTL2g8R6mw0Ow0KAoI"
+          "current_key": "AIzaSyBGPFLP8u3i6hUCsvCJ1nMr8DaMYIYz5Bg"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "322477819026-2uaggu0ch1fvs3rgqr2anq5pqpa70l8k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:322477819026:android:6893c5d720c54425d6124b",
+        "android_client_info": {
+          "package_name": "com.securedoorstudio.freeearn"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "322477819026-g0imftnb1l93q5n42u1fsbhn54baqdog.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.securedoorstudio.freeearn",
+            "certificate_hash": "7141b507bfb11e604b6ef55bb2bc9d0b5d0a2a6e"
+          }
+        },
+        {
+          "client_id": "322477819026-2uaggu0ch1fvs3rgqr2anq5pqpa70l8k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGPFLP8u3i6hUCsvCJ1nMr8DaMYIYz5Bg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "322477819026-2uaggu0ch1fvs3rgqr2anq5pqpa70l8k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-8535991049432097~6243622647"
     }
   ],
   "configuration_version": "1"

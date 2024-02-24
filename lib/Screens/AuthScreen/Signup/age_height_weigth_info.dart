@@ -1,3 +1,8 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -22,6 +27,16 @@ class AgeHeightWeightInfo extends StatefulWidget {
 }
 
 class _AgeHeightWeightInfoState extends State<AgeHeightWeightInfo> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      final provider = Provider.of<AuthenProvider>(context,listen: false);
+      provider.age.clear();
+      provider.userName.clear();
+    });
+  }
 
   String? selectedAccountTypeValue;
   @override
@@ -244,8 +259,29 @@ class _AgeHeightWeightInfoState extends State<AgeHeightWeightInfo> {
                                 width: scrSize.width*0.8,
                                 child: button(
                                   context: context,
-                                  onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => selectedAccountTypeValue == "Professional"? ProfessionalSignupScreen() : BodyTypeAndWorkoutLevel()));
+                                  onTap: () async {
+                                    if(
+                                    selectedAccountTypeValue != null
+                                        &&
+                                    provider.userName.text.isNotEmpty
+                                    &&
+                                    provider.age.text.isNotEmpty
+                                    ){
+                                      showMyWaitingModal(context: context);
+                                      await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).set({
+                                        "name" : provider.userName.text,
+                                        "age" : provider.storeSignupDateTime,
+                                        "accountType" : selectedAccountTypeValue,
+                                        "userId" : FirebaseAuth.instance.currentUser?.uid,
+                                        "createdAt" : DateTime.now().millisecondsSinceEpoch
+                                      }).then((value) {
+                                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => selectedAccountTypeValue == "Professional"? ProfessionalSignupScreen() : BodyTypeAndWorkoutLevel()));
+                                      }).onError((error, stackTrace) {
+                                        Utils.flushBarErrorMessage(error.toString(), context);
+                                      });
+                                    }else{
+                                      Utils.flushBarErrorMessage("Please fill all information", context);
+                                    }
                                   },btnText: "Continue",),
                               ),
                             ),

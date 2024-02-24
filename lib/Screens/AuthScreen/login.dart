@@ -34,6 +34,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
     });
   }
+  String? _validateEmail(String? value) {
+    if (value!.isEmpty) {
+      return 'Please enter an email address.';
+    }
+    if (!RegExp(r'^[\w-]+(\.[\w-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*(\.[a-zA-Z]{2,})$').hasMatch(value)) {
+      return 'Please enter a valid email address.';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value!.isEmpty) {
+      return 'Please enter a password.';
+    }
+    if (value.length < 6) {
+      return 'Password should be at least 6 characters.';
+    }
+    return null;
+  }
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthenProvider>(
@@ -81,6 +100,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: "Enter your email.",
                         keyboardType: TextInputType.emailAddress,
                         controller: provider.email,
+                        validator: _validateEmail,
                         onChanged: (e){
                           // provider.signupScreenEmailValidationCheckFun(value: AllValidation.isEmailValid(e));
                           print("check -> ${e}");
@@ -97,6 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         hintText: "Enter your password.",
                         keyboardType: TextInputType.visiblePassword,
                         controller: provider.password,
+                        validator: _validatePassword,
                         onChanged: (e){
                           // provider.signupScreenEmailValidationCheckFun(value: AllValidation.isEmailValid(e));
                           print("check -> ${e}");
@@ -135,11 +156,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       context: context,
                       onTap: () async {
                         // String error = '';
+                        if(_formKey.currentState!.validate()){
                         if (provider.email.text.isNotEmpty && provider.password.text.isNotEmpty) {
+                          showMyWaitingModal(context: context);
                           // print('Form is valid, email: $_email');
                           provider.loginEmailAndPassword(context: context,emailController: provider.email.text,passwordController: provider.password.text,);
 
                           // Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                        }
                         }
                         print("object");},
                       btnText: "Login",

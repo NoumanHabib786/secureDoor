@@ -11,6 +11,7 @@ import '../../../resources/buttons.dart';
 import '../../../resources/dialogBox.dart';
 import '../../../resources/imagesPaths.dart';
 import '../../../resources/sizedbox.dart';
+import '../../../resources/textStyle.dart';
 import 'age_height_weigth_info.dart';
 
 class SignupStepThreeEmailVerify extends StatefulWidget {
@@ -105,6 +106,11 @@ class _SignupStepThreeEmailVerifyState extends State<SignupStepThreeEmailVerify>
                       ),
                     ),
                     sizeHeight30,
+                    Text(
+                      'Email',
+                      style: txtStyle14AndBold,
+                    ),
+                    sizeHeight15,
                     ///Email
                     textField(
                       hintText: ".",
@@ -198,6 +204,7 @@ class _SignupStepThreeEmailVerifyState extends State<SignupStepThreeEmailVerify>
                                     padding: EdgeInsets.symmetric(horizontal: 50),
                                     // width: scrSize.width*0.4,
                                     child: button(context: context,btnText: "Resend email",onTap: () async {
+                                      Navigator.pop(context);
                                       provider.sendVerificationEmailLinkFun();
                                       // Navigator.push(context, MaterialPageRoute(builder: (context) => SignupStepThreeEmailVerified()));
                                       // Navigator.push(context, MaterialPageRoute(builder: (context) => SignupFullName()));
@@ -206,7 +213,8 @@ class _SignupStepThreeEmailVerifyState extends State<SignupStepThreeEmailVerify>
                                   sizeHeight30,
                                   TextButton(
                                     onPressed: (){
-                                      Navigator.push(context, MaterialPageRoute(builder: (context) => AgeHeightWeightInfo()));
+                                      Navigator.pop(context);
+                                      // Navigator.push(context, MaterialPageRoute(builder: (context) => AgeHeightWeightInfo()));
                                       // Navigator.pop(context);
                                     },
                                     child: Text(

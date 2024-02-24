@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
+import 'color.dart';
 import 'imagesPaths.dart';
 const sizeHeight20 = SizedBox(height: 20,);
 const sizeHeight15 = SizedBox(height: 15,);
@@ -40,3 +43,35 @@ signupBackButton({context}){
   return GestureDetector(onTap: (){Navigator.pop(context);}, child: Image.asset(ImagesPaths.backIosIcon,width: 24,
     height: 24,));
 }
+
+showMyWaitingModal({required BuildContext context}){
+  return  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return Center(
+        child: CircularProgressIndicator(color: mainColor),
+      );
+    },
+  );
+}
+backDropWithLoading({required BuildContext context}){
+  final scrSize = MediaQuery.of(context).size;
+  return  Container(
+    height: scrSize.height,
+    width: scrSize.width,
+    child: Scaffold(
+      backgroundColor: transparentColor,
+      body: BackdropFilter(
+        filter: ImageFilter.blur(sigmaY: 10,sigmaX: 10),
+        child: Center(
+          child: CircularProgressIndicator(
+            color: mainColor,
+          ),
+        ),
+      ),
+    ),
+  );
+}
+
+

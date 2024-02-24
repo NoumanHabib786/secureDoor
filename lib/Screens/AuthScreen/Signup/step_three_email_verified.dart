@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/age_height_weigth_info.dart';
 import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/textfield.dart';
 import 'package:secure_fitness_comp/resources/textfield.dart';
 
@@ -103,6 +104,7 @@ class _SignupStepThreeEmailVerifiedState extends State<SignupStepThreeEmailVerif
                       controller: provider.email.text.isNotEmpty? provider.email : TextEditingController(text: FirebaseAuth.instance.currentUser?.email),
                       isReadBool: true,
                       keyboardType: TextInputType.emailAddress,
+                      suffixIcon: Icon(Icons.check,color: Colors.green,),
                     ),
                     sizeHeight70,
                     Align(
@@ -112,7 +114,7 @@ class _SignupStepThreeEmailVerifiedState extends State<SignupStepThreeEmailVerif
                         child: button(
                           context: context,
                           onTap: (){
-                            // Navigator.push(context, MaterialPageRoute(builder: (context) => SignupStepFourPhoneNumber()));
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => AgeHeightWeightInfo()));
                             },
                           btnText: 'Continue',),
                       ),
