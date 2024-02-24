@@ -7,5 +7,8 @@ class ImagesPaths {
   static String confirmEmailDialogIcon = "assets/icons/mail-open.png";
   static const backIosIcon = "assets/icons/arrow-up-01-sharp.png";
   static String onBoardImage = "assets/icons/onboard.png";
+  static const fileUploadIcon = "assets/icons/file-upload.png";
+  static const documentIcon = "assets/icons/document-attachment.png";
+
 
 }

@@ -168,4 +168,15 @@ class AuthenProvider extends ChangeNotifier {
     age = TextEditingController(text: DateFormat("MMM dd, yyyy").format(dateTime));
     notifyListeners();
   }
+  /// Start & end Time
+  DateTime? startTime;
+  DateTime? endTime;
+  startTimeFun({required DateTime dateTime}){
+    startTime = dateTime;
+    notifyListeners();
+  }
+  endTimeFun({required DateTime dateTime}){
+    endTime = dateTime;
+    notifyListeners();
+  }
 }

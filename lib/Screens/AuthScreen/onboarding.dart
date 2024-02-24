@@ -29,14 +29,8 @@ class _OnBoardingState extends State<OnBoarding> {
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               sizeHeight70,
-              SizedBox(
-                // width: scrSize.width*0.9,
-                child: Expanded(
-                  // height: scrSize.height*0.45,
-                  // width: scrSize.width,
-                    child: Center(child: Image.asset(ImagesPaths.onBoardImage,fit: BoxFit.cover,))),
-              ),
-              spacer,
+              Expanded(child: Image.asset(ImagesPaths.onBoardImage,fit: BoxFit.cover,width: double.maxFinite,height: double.maxFinite,)),
+              // spacer,
               sizeHeight20,
               Align(
                 alignment: Alignment.topLeft,

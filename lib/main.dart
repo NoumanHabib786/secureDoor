@@ -16,6 +16,7 @@ import 'package:sizer/sizer.dart';
 import 'dart:io';
 
 import 'Provider/auth_provider.dart';
+import 'Provider/image_picker_provider.dart';
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -57,6 +58,8 @@ class MyApp extends StatelessWidget {
           providers: [
             ChangeNotifierProvider<AuthenProvider>(
                 create: (context) => AuthenProvider(),),
+            ChangeNotifierProvider<ImagePickerProvider>(
+                create: (context) => ImagePickerProvider(),),
           ],
           child: MaterialApp(
             title: 'Fitness App',
