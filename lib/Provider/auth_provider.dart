@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -8,9 +9,11 @@ import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/age_height_weigth_
 import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/bodyType_level.dart';
 import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/professional_signup.dart';
 import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/step_three_email_verify.dart';
+import 'package:secure_fitness_comp/utils/Routes/RoutesName.dart';
 import 'package:secure_fitness_comp/utils/notficationsBar.dart';
 
 import '../Screens/AuthScreen/Signup/step_three_email_verified.dart';
+import '../models/enthusistModel.dart';
 
 class AuthenProvider extends ChangeNotifier {
   final email = TextEditingController();
@@ -26,55 +29,102 @@ class AuthenProvider extends ChangeNotifier {
   // User? get userData => _userData;
   ///Sign up Functions
   ///User login fun
-  Future loginEmailAndPassword({emailController, passwordController, context}) async {
+  ///
+  EnthusistModel? enthusistModel;
+
+  Future loginEmailAndPassword(
+      {emailController, passwordController, context}) async {
     // showMyWaitingModal(context: context);
     // try {
     try {
-    UserCredential? userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      UserCredential? userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email.text,
         password: password.text,
       );
-      if(userCredential.user != null){
+      if (userCredential.user != null) {
         print("ok");
-        if(FirebaseAuth.instance.currentUser?.emailVerified == false){
-          Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SignupStepThreeEmailVerify()), (route) => false);
-        }else{
-          await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).get().then((value) =>{
-           if(value.exists == false){
-             Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => AgeHeightWeightInfo()), (route) => false)
-           }
-            else if(value.get("name") == null || value.get("name").toString().isEmpty){
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => AgeHeightWeightInfo()), (route) => false)
-            }else if(value.get("accountType") == "Professional" && value.get("profileImage") == null || value.get("profileImage").toString().isEmpty){
-        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => ProfessionalSignupScreen()), (route) => false)
-      }else if(value.get("accountType") == "Enthusiast" && value.get("profileImage") == null || value.get("profileImage").toString().isEmpty){
-              Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => BodyTypeAndWorkoutLevel()), (route) => false)
-            }else{
-              Utils.flushBarSuccessMessage("Home Screen", context)
+        if (FirebaseAuth.instance.currentUser?.emailVerified == false) {
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => SignupStepThreeEmailVerify()),
+              (route) => false);
+        } else {
+          await FirebaseFirestore.instance
+              .collection("users")
+              .doc(FirebaseAuth.instance.currentUser?.uid)
+              .get()
+              .then((value) {
+            {
+              print(value['accountType']);
+              if (value.exists == false) {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AgeHeightWeightInfo()),
+                    (route) => false);
+              } else {
+                if (value['accountType'] == 'Enthusiast') {
+                  print(value.data());
+                  Map data = {};
+                  enthusistModel = EnthusistModel.fromJson(value.data()!);
+                  notifyListeners();
+                  Utils.flushBarSuccessMessage("Enthusiast", context);
+                  RoutesName.remove(context, RoutesName.EnthuHomeScreen);
+                } else {
+                  if (value.get("name") == null ||
+                      value.get("name").toString().isEmpty) {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AgeHeightWeightInfo()),
+                        (route) => false);
+                  } else if (value.get("accountType") == "Professional" &&
+                          value.get("profileImage") == null ||
+                      value.get("profileImage").toString().isEmpty) {
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ProfessionalSignupScreen()),
+                        (route) => false);
+                  } else if (value.get("accountType") == "Enthusiast") {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BodyTypeAndWorkoutLevel()),
+                    );
+                  }
+                }
+              }
             }
           });
-        };
+        }
       }
     } on FirebaseAuthMultiFactorException catch (e) {
       if (e.code == 'wrong-password') {
         // Check if the user has reached the maximum number of failed attempts
-        Utils.flushBarErrorMessage("Wrong password! Please try again.",context); // Display toast message for wrong password
-      }
-      else if (e.code.contains('Access to this account has been temporarily disabled due to many failed login attempts') == true) {
-        Utils.flushBarErrorMessage("Access has been temporarily disabled. Please reset your password.",context); // Display toast message to reset password
-      }
-      else if (e.code == 'too-many-requests') {
-        Utils.flushBarErrorMessage("Access to this account has been temporarily disabled due to many failed login attempts. Please try again later or reset your password.",context); // Display toast message for account temporarily disabled
-      }
-      else if (e.code == 'user-not-found') {
-        Utils.flushBarErrorMessage("You don't have account. Please create a account.",context); // Display toast message for account temporarily disabled
-      }
-      else {
-        Utils.flushBarErrorMessage("Error -> ${e.code}",context);
+        Utils.flushBarErrorMessage("Wrong password! Please try again.",
+            context); // Display toast message for wrong password
+      } else if (e.code.contains(
+              'Access to this account has been temporarily disabled due to many failed login attempts') ==
+          true) {
+        Utils.flushBarErrorMessage(
+            "Access has been temporarily disabled. Please reset your password.",
+            context); // Display toast message to reset password
+      } else if (e.code == 'too-many-requests') {
+        Utils.flushBarErrorMessage(
+            "Access to this account has been temporarily disabled due to many failed login attempts. Please try again later or reset your password.",
+            context); // Display toast message for account temporarily disabled
+      } else if (e.code == 'user-not-found') {
+        Utils.flushBarErrorMessage(
+            "You don't have account. Please create a account.",
+            context); // Display toast message for account temporarily disabled
+      } else {
+        Utils.flushBarErrorMessage("Error -> ${e.code}", context);
         print('FirebaseAuthMultiFactorException Error: ${e.code}');
       }
     }
-
   }
 
   ///Forgot User
@@ -89,10 +139,71 @@ class AuthenProvider extends ChangeNotifier {
     }
   }
 
+  bool userLoading = false;
+
+  setuserLoading(bool value) {
+    userLoading = value;
+    notifyListeners();
+  }
+
+  userDataFunction(BuildContext context) async {
+    setuserLoading(true);
+    try {
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .get()
+          .then((value) {
+        {
+          setuserLoading(false);
+          print(value['accountType']);
+          if (value.exists == false) {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => AgeHeightWeightInfo()),
+                (route) => false);
+          } else {
+            if (value['accountType'] == 'Enthusiast') {
+              print(value.data());
+              Map data = {};
+              enthusistModel = EnthusistModel.fromJson(value.data()!);
+              notifyListeners();
+            } else {
+              if (value.get("name") == null ||
+                  value.get("name").toString().isEmpty) {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AgeHeightWeightInfo()),
+                    (route) => false);
+              } else if (value.get("accountType") == "Professional" &&
+                      value.get("profileImage") == null ||
+                  value.get("profileImage").toString().isEmpty) {
+                Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ProfessionalSignupScreen()),
+                    (route) => false);
+              } else if (value.get("accountType") == "Enthusiast") {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => BodyTypeAndWorkoutLevel()),
+                );
+              }
+            }
+          }
+        }
+      });
+    } catch (e) {
+      print(e);
+      setuserLoading(false);
+    }
+  }
+
   /// -> checkEmailVerified
 
-  verificationCheckFun
-      ({context,mounted}) {
+  verificationCheckFun({context, mounted}) {
     Timer? timerStore;
     Timer.periodic(const Duration(seconds: 3), (timer) {
       FirebaseAuth.instance.currentUser?.reload().then((value) {
@@ -107,7 +218,7 @@ class AuthenProvider extends ChangeNotifier {
                 MaterialPageRoute(
                   builder: (context) => SignupStepThreeEmailVerified(),
                 ),
-                    (route) => false);
+                (route) => false);
           }
         }
       });
@@ -119,52 +230,61 @@ class AuthenProvider extends ChangeNotifier {
 
   /// -> Create User Fun
   User? userSignup;
-  signupEmailAndPassword({emailController, passwordController, context,}) async {
+
+  signupEmailAndPassword({
+    emailController,
+    passwordController,
+    context,
+  }) async {
     // showMyWaitingModal(context: context);
     try {
-      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: emailController,
         password: passwordController,
       );
       userSignup = userCredential.user;
-      if(userSignup != null){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => SignupStepThreeEmailVerify()));
-      }else{
+      if (userSignup != null) {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => SignupStepThreeEmailVerify()));
+      } else {
         print("Nothing");
       }
       // await sf.setString(DBkeys, "emailPassword");
 
-
       // });
       // }
-
 
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       if (e.code == 'email-already-in-use') {
-        Utils.flushBarErrorMessage("The email address is already in use. Please sign in or use a different email.",context);
+        Utils.flushBarErrorMessage(
+            "The email address is already in use. Please sign in or use a different email.",
+            context);
         // Navigator.pop(context); // Display toast message for email already in use
         // showIndicator == true;
         notifyListeners();
         // print("lastValue aleady $showIndicator");
-      }
-      else {
+      } else {
         Navigator.pop(context);
         print('Error: ${e.code}');
-        Utils.flushBarErrorMessage('Error: ${e.code}',context);
+        Utils.flushBarErrorMessage('Error: ${e.code}', context);
         // showIndicator == true;
         notifyListeners();
       }
     } catch (e) {
       Navigator.pop(context);
       print('Error: $e');
-      Utils.flushBarErrorMessage('Error: $e',context);
+      Utils.flushBarErrorMessage('Error: $e', context);
       // showIndicator == true;
       notifyListeners();
     }
     // print("lastValue $showIndicator");
     notifyListeners();
   }
+
   Future<void> sendVerificationEmailLinkFun() async {
     // User? _user;
     print("Verification email sending started...");
@@ -193,27 +313,38 @@ class AuthenProvider extends ChangeNotifier {
   }
 
   DateTime? storeSignupDateTime;
-  storeSignupDateTimeFun({required DateTime dateTime}){
+
+  storeSignupDateTimeFun({required DateTime dateTime}) {
     storeSignupDateTime = dateTime;
-    age = TextEditingController(text: DateFormat("MMM dd, yyyy").format(dateTime));
+    age = TextEditingController(
+        text: DateFormat("MMM dd, yyyy").format(dateTime));
     notifyListeners();
   }
+
   /// Start & end Time
   DateTime? startTime;
   DateTime? endTime;
-  startTimeFun({required DateTime dateTime}){
+
+  startTimeFun({required DateTime dateTime}) {
     startTime = dateTime;
     notifyListeners();
   }
-  endTimeFun({required DateTime dateTime}){
+
+  endTimeFun({required DateTime dateTime}) {
     endTime = dateTime;
     notifyListeners();
   }
-  Future signupDataSendUpdateFun({required Map<String,dynamic> map,context}) async {
-    await FirebaseFirestore.instance.collection("users").doc(FirebaseAuth.instance.currentUser?.uid).update(map).then((value) {
+
+  Future signupDataSendUpdateFun(
+      {required Map<String, dynamic> map, context}) async {
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(FirebaseAuth.instance.currentUser?.uid)
+        .update(map)
+        .then((value) {
       return value;
     }).onError((error, stackTrace) {
-    Utils.flushBarErrorMessage(error.toString(), context);
-  });
+      Utils.flushBarErrorMessage(error.toString(), context);
+    });
   }
 }

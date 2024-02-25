@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:secure_fitness_comp/Screens/Enthusist/chat/mainChatScreen.dart';
@@ -42,7 +43,10 @@ class _EnthuDrawerState extends State<EnthuDrawer> {
             height: 15.h,
           ),
           height(2),
-          Text(getGreeting(),style: MessageFonts.notifyW5(color: Colors.white),),
+          Text(
+            getGreeting(),
+            style: MessageFonts.notifyW5(color: Colors.white),
+          ),
           height(5),
           ListTile(
             onTap: () {
@@ -85,6 +89,10 @@ class _EnthuDrawerState extends State<EnthuDrawer> {
           ),
           Spacer(),
           ListTile(
+            onTap: () async {
+              RoutesName.remove(context, RoutesName.splashScreen);
+              await FirebaseAuth.instance.signOut();
+            },
             title: Text(
               "Logout",
               style: MessageFonts.notifyW5(color: Colors.white),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:secure_fitness_comp/utils/Routes/RoutesName.dart';
 import 'package:secure_fitness_comp/utils/notficationsBar.dart';
 
 import '../../../Provider/auth_provider.dart';
@@ -447,6 +448,7 @@ class _BodyTypeAndWorkoutLevelState extends State<BodyTypeAndWorkoutLevel> {
                                  "preferredActivities" : selectedPreferredActivitiesValue,
                                }).then((value) {
                                  Utils.flushBarSuccessMessage("All Done", context);
+                                 RoutesName.remove(context, RoutesName.EnthuHomeScreen);
                               });
                                }else{
                                  Utils.flushBarErrorMessage("Please select all fields.", context);

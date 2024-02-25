@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
               ),
               primarySwatch: MainColor.maincolor,
             ),
-            initialRoute: RoutesName.EnthuHomeScreen,
+            initialRoute: RoutesName.splashScreen,
             onGenerateRoute: Routes.onGenerateRoute,
           ),
         );

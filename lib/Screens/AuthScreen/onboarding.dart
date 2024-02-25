@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:secure_fitness_comp/Screens/AuthScreen/login.dart';
 import 'package:secure_fitness_comp/resources/imagesFolder.dart';
@@ -17,6 +19,7 @@ class OnBoarding extends StatefulWidget {
 }
 
 class _OnBoardingState extends State<OnBoarding> {
+
   @override
   Widget build(BuildContext context) {
     final scrSize = MediaQuery.of(context).size;
