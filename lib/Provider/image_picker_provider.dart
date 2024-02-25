@@ -32,6 +32,7 @@ class ImagePickerProvider extends ChangeNotifier{
 
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       allowMultiple: true, // Allow users to pick multiple files
+      allowedExtensions: ["png","jpg","jpeg"]
     );
 
     if (result != null && result.files.isNotEmpty) {

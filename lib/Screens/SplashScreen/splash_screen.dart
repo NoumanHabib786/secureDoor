@@ -10,6 +10,7 @@ import 'package:secure_fitness_comp/resources/imagesPaths.dart';
 
 import '../../Provider/auth_provider.dart';
 import '../../models/enthusistModel.dart';
+import '../../models/professional_model.dart';
 import '../../utils/Routes/RoutesName.dart';
 import '../../utils/notficationsBar.dart';
 import '../AuthScreen/Signup/age_height_weigth_info.dart';
@@ -55,6 +56,12 @@ class _SplashScreenState extends State<SplashScreen> {
                   print(value.data());
                   Map data = {};
                   auths.enthusistModel = EnthusistModel.fromJson(value.data()!);
+                  setState(() {});
+                  RoutesName.remove(context, RoutesName.EnthuHomeScreen);
+                }else if (value['accountType'] == 'Professional'&& value.get("specialization") != null) {
+                  print(value.data());
+                  Map data = {};
+                  auths.professionalUserModel = ProfessionalUserModel.fromJson(value.data()!);
                   setState(() {});
                   RoutesName.remove(context, RoutesName.EnthuHomeScreen);
                 } else {

@@ -9,6 +9,7 @@ import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/age_height_weigth_
 import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/bodyType_level.dart';
 import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/professional_signup.dart';
 import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/step_three_email_verify.dart';
+import 'package:secure_fitness_comp/models/professional_model.dart';
 import 'package:secure_fitness_comp/utils/Routes/RoutesName.dart';
 import 'package:secure_fitness_comp/utils/notficationsBar.dart';
 
@@ -31,6 +32,7 @@ class AuthenProvider extends ChangeNotifier {
   ///User login fun
   ///
   EnthusistModel? enthusistModel;
+  ProfessionalUserModel? professionalUserModel;
 
   Future loginEmailAndPassword(
       {emailController, passwordController, context}) async {
@@ -71,6 +73,13 @@ class AuthenProvider extends ChangeNotifier {
                   enthusistModel = EnthusistModel.fromJson(value.data()!);
                   notifyListeners();
                   Utils.flushBarSuccessMessage("Enthusiast", context);
+                  RoutesName.remove(context, RoutesName.EnthuHomeScreen);
+                }else if (value['accountType'] == 'Professional') {
+                  print(value.data());
+                  Map data = {};
+                  professionalUserModel = ProfessionalUserModel.fromJson(value.data()!);
+                  notifyListeners();
+                  Utils.flushBarSuccessMessage("Professional", context);
                   RoutesName.remove(context, RoutesName.EnthuHomeScreen);
                 } else {
                   if (value.get("name") == null ||
@@ -167,6 +176,11 @@ class AuthenProvider extends ChangeNotifier {
               print(value.data());
               Map data = {};
               enthusistModel = EnthusistModel.fromJson(value.data()!);
+              notifyListeners();
+            }else if (value['accountType'] == 'Professional') {
+              print(value.data());
+              Map data = {};
+              professionalUserModel = ProfessionalUserModel.fromJson(value.data()!);
               notifyListeners();
             } else {
               if (value.get("name") == null ||

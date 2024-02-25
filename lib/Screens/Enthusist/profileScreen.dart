@@ -5,6 +5,7 @@ import 'package:secure_fitness_comp/Provider/auth_provider.dart';
 import 'package:secure_fitness_comp/resources/components/Buttons.dart';
 import 'package:secure_fitness_comp/resources/components/appbar.dart';
 import 'package:secure_fitness_comp/resources/fonts.dart';
+import 'package:secure_fitness_comp/resources/sizedbox.dart';
 import 'package:sizer/sizer.dart';
 
 class EnthuProfile extends StatefulWidget {
@@ -62,7 +63,7 @@ class _EnthuProfileState extends State<EnthuProfile> {
                       children: [
                         buildContainer(
                             text: "Name",
-                            text2: "${value.enthusistModel?.name}"),
+                            text2: "${value.enthusistModel?.name ?? value.professionalUserModel?.name}"),
                         buildContainer(
                             text: "Email",
                             text2:
@@ -70,24 +71,105 @@ class _EnthuProfileState extends State<EnthuProfile> {
                         buildContainer(
                             text: "Age",
                             text2: calculateAge(
-                                value.enthusistModel?.age.toDate() ??
-                                    DateTime.now())),
+                                value.enthusistModel?.age.toDate() ?? value.professionalUserModel!.age.toDate())),
+                        value.professionalUserModel != null?
+                           buildContainer(
+                             text: "Specialization",
+                             text2: value.professionalUserModel?.specialization ??""
+                           )
+                            :
                         buildContainer(
                             text: "Body Type",
                             text2: "${value.enthusistModel?.bodyType}"),
+                        value.professionalUserModel != null?
+                        SizedBox()
+                            :
                         buildContainer(
                             text: "Fitness Goal",
                             text2: "${value.enthusistModel?.fitnessGoal}"),
+                        value.professionalUserModel != null?
+                        SizedBox()
+                            :
                         buildContainer(
                             text: "Height",
                             text2: "${value.enthusistModel?.height}"),
+                        value.professionalUserModel != null?
+                        SizedBox()
+                            :
                         buildContainer(
                             text: "Weight",
                             text2: "${value.enthusistModel?.weight}"),
+                        value.professionalUserModel != null?
+                        SizedBox()
+                            :
                         buildContainer(
                             text: "Pref. Activity",
                             text2:
                                 "${value.enthusistModel?.preferredActivities}"),
+                        value.professionalUserModel != null?
+                        Container(
+                          // padding: EdgeInsets.all(1.5.h),
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade100, borderRadius: BorderRadius.circular(12)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 15),
+                                child: Text(
+                                  "Image",
+                                  style: MessageFonts.notifyW5(),
+                                ),
+                              ),
+                              // sizeHeight15,
+                              SizedBox(
+                                  width: double.maxFinite,
+                                  height: 250,
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
+                                      child: Image.network(value.professionalUserModel?.userImage ?? "",fit: BoxFit.cover,))),
+                            ],
+                          ),
+                        )
+                        :
+                        SizedBox(),
+                        value.professionalUserModel != null?
+                        Container(
+                          // padding: EdgeInsets.all(1.5.h),
+                          margin: const EdgeInsets.symmetric(vertical: 10),
+                          decoration: BoxDecoration(
+                              color: Colors.grey.shade100, borderRadius: BorderRadius.circular(12)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 20.0,vertical: 15),
+                                child: Text(
+                                  "Certificates",
+                                  style: MessageFonts.notifyW5(),
+                                ),
+                              ),
+                              // sizeHeight15,
+                              SizedBox(
+                                  width: double.maxFinite,
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: NeverScrollableScrollPhysics(),
+                                      itemCount: value.professionalUserModel?.certificateImageUrls.length,
+                                      itemBuilder: (context,index){
+                                    return  value.professionalUserModel?.certificateImageUrls[index].toString().contains("png") == true? ClipRRect(
+                                        borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
+                                        child:  Image.network(
+                                          value.professionalUserModel?.certificateImageUrls[index],
+                                          height: 250,
+                                          fit: BoxFit.cover,)) : Text("${value.professionalUserModel?.certificateImageUrls.length} Documents are available");
+                                  })),
+                            ],
+                          ),
+                        )
+                        :
+                        SizedBox(),
                       ],
                     ),
                   ),

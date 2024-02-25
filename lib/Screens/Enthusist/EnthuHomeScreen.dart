@@ -65,7 +65,7 @@ class _EnthuHomeScreenState extends State<EnthuHomeScreen> {
                       Padding(
                         padding: EdgeInsets.only(left: 18),
                         child: Text(
-                          "Hi , ${data.enthusistModel?.name}",
+                          "Hi , ${data.enthusistModel?.name ?? data.professionalUserModel?.name}",
                           style: MessageFonts.notifyW5(fontSize: 15.sp),
                         ),
                       ),

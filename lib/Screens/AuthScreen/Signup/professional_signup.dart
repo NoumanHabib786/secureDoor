@@ -344,7 +344,7 @@ class _ProfessionalSignupScreenState extends State<ProfessionalSignupScreen> {
                                          },
                                          onConfirm: (date) {
                                            // model.updateSelectedTimeFrom(date);
-                                           provider.endTimeFun(dateTime: date);
+                                           provider.startTimeFun(dateTime: date);
                                            print('confirm $date');
                                          },
                                          currentTime: DateTime.now(),
@@ -361,8 +361,8 @@ class _ProfessionalSignupScreenState extends State<ProfessionalSignupScreen> {
                                            ),
                                        child: Center(
                                            child: Text(
-                                             provider.endTime != null?
-                                                 DateFormat().add_Hm().format(provider.endTime!)
+                                             provider.startTime != null?
+                                                 DateFormat().add_Hm().format(provider.startTime!)
                                              // model.showTimeFrom
                                              //     ? AppUtils.showFormattedTime(
                                              //     model.selectedTimeFrom!)
@@ -400,7 +400,7 @@ class _ProfessionalSignupScreenState extends State<ProfessionalSignupScreen> {
                                          },
                                          onConfirm: (date) {
                                            if(date.millisecondsSinceEpoch > provider.startTime!.millisecondsSinceEpoch){
-                                           provider.startTimeFun(dateTime: date);
+                                           provider.endTimeFun(dateTime: date);
                                            print('confirm $date');
                                            }else{
                                              Utils.flushBarErrorMessage("End time is less than start time.", context);
@@ -421,8 +421,8 @@ class _ProfessionalSignupScreenState extends State<ProfessionalSignupScreen> {
                                        ),
                                        child: Center(
                                            child: Text(
-                                             provider.startTime != null
-                                                 ? DateFormat().add_Hm().format(provider.startTime!)
+                                             provider.endTime != null
+                                                 ? DateFormat().add_Hm().format(provider.endTime!)
                                                  :
                                            "End Time",
                                              // model.selectedTime.hour.toString() +
@@ -465,6 +465,7 @@ class _ProfessionalSignupScreenState extends State<ProfessionalSignupScreen> {
                                    showMyWaitingModal(context: context);
                                    List<File> files = imagePicker.selectedFiles.map((platformFile) => File(platformFile.path!)).toList();
                                    List<String> certificateList = [];
+                                   String userImageUrl = "";
                                    if(files.isNotEmpty){
                                      final FirebaseStorage _storage =
                                          FirebaseStorage.instance;
@@ -491,7 +492,7 @@ class _ProfessionalSignupScreenState extends State<ProfessionalSignupScreen> {
                                          await reference.putFile(userImage!);
 
                                          // Get the image URL from the uploaded image
-                                         String userImageUrl = await taskSnapshot.ref
+                                         userImageUrl = await taskSnapshot.ref
                                              .getDownloadURL();
                                          for(int i=0; i<files.length; i++){
                                            String fileName = DateTime.now()
@@ -527,15 +528,16 @@ class _ProfessionalSignupScreenState extends State<ProfessionalSignupScreen> {
                                        if(imagePicker.selectedFiles.length == certificateList.length){
                                          await provider.signupDataSendUpdateFun(map: {
                                            "certificateImageUrls" : certificateList,
-                                           "userImage" : userImage,
+                                           "userImage" : userImageUrl,
                                            "startTime" : provider.startTime,
                                            "endTime" : provider.endTime,
                                            "specialization" : selectedSpecializationValue,
-                                         }).then((value) {
+                                         },context: context).then((value) {
                                            Utils.flushBarSuccessMessage("All Done", context);
                                          });
                                        }
-                                     } catch (e) {
+                                     }  catch (e) {
+                                       Utils.flushBarErrorMessage(e.toString(), context);
                                        print(
                                            'Error uploading image to Firebase: ${e.toString()}');
                                      }
