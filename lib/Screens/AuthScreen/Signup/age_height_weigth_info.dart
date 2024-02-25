@@ -273,7 +273,8 @@ class _AgeHeightWeightInfoState extends State<AgeHeightWeightInfo> {
                                         "age" : provider.storeSignupDateTime,
                                         "accountType" : selectedAccountTypeValue,
                                         "userId" : FirebaseAuth.instance.currentUser?.uid,
-                                        "createdAt" : DateTime.now().millisecondsSinceEpoch
+                                        "createdAt" : DateTime.now().millisecondsSinceEpoch,
+                                        "followList" : [],
                                       }).then((value) {
                                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => selectedAccountTypeValue == "Professional"? ProfessionalSignupScreen() : BodyTypeAndWorkoutLevel()));
                                       }).onError((error, stackTrace) {

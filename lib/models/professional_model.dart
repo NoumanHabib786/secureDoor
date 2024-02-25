@@ -11,6 +11,7 @@ class ProfessionalUserModel {
   String specialization;
   Timestamp age;
   int createdAt ;
+  List followList ;
 
   ProfessionalUserModel({
     required this.specialization,
@@ -22,6 +23,7 @@ class ProfessionalUserModel {
     required this.name,
     required this.endTime,
     required this.age,
+    required this.followList,
     required this.createdAt,
   });
 
@@ -29,6 +31,7 @@ class ProfessionalUserModel {
     return ProfessionalUserModel(
       specialization: json['specialization'],
       userId: json['userId'],
+      followList: json['followList'],
       startTime: json['startTime'],
       endTime: json['endTime'],
       userImage: json['userImage'],
@@ -44,6 +47,7 @@ class ProfessionalUserModel {
     return {
       'certificateImageUrls': certificateImageUrls,
       'userId': userId,
+      'followList': followList,
       'createdAt': createdAt,
       'startTime': startTime,
       'endTime': endTime,

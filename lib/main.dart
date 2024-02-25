@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:secure_fitness_comp/Provider/chatProvider.dart';
 import 'package:secure_fitness_comp/Provider/postsProvider.dart';
+import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/professional_signup.dart';
 import 'package:secure_fitness_comp/Screens/SplashScreen/splash_screen.dart';
 import 'package:secure_fitness_comp/resources/appColors.dart';
 import 'package:secure_fitness_comp/resources/fonts.dart';
@@ -82,6 +83,7 @@ class MyApp extends StatelessWidget {
             ),
             initialRoute: RoutesName.splashScreen,
             onGenerateRoute: Routes.onGenerateRoute,
+            // home: ProfessionalSignupScreen(),
           ),
         );
       },

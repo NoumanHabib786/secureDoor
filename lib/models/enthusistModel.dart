@@ -11,6 +11,7 @@ class EnthusistModel {
   String weight;
   Timestamp age;
   String height;
+  List followList;
 
   EnthusistModel({
     required this.fitnessGoal,
@@ -21,6 +22,7 @@ class EnthusistModel {
     required this.accountType,
     required this.name,
     required this.weight,
+    required this.followList,
     required this.age,
     required this.height,
   });
@@ -29,6 +31,7 @@ class EnthusistModel {
     return EnthusistModel(
       fitnessGoal: json['fitnessGoal'],
       userId: json['userId'],
+      followList: json['followList'],
       bodyType: json['bodyType'],
       workoutDifficulty: json['workoutDifficulty'],
       preferredActivities: json['preferredActivities'],
@@ -44,6 +47,7 @@ class EnthusistModel {
     return {
       'fitnessGoal': fitnessGoal,
       'userId': userId,
+      'followList': followList,
       'bodyType': bodyType,
       'workoutDifficulty': workoutDifficulty,
       'preferredActivities': preferredActivities,

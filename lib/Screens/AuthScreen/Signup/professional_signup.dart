@@ -29,6 +29,7 @@ class ProfessionalSignupScreen extends StatefulWidget {
 class _ProfessionalSignupScreenState extends State<ProfessionalSignupScreen> {
   File? userImage;
   String? selectedSpecializationValue;
+  String? selectedExperienceValue;
   @override
   void initState() {
     // TODO: implement initState
@@ -316,6 +317,52 @@ class _ProfessionalSignupScreenState extends State<ProfessionalSignupScreen> {
                          ),
                          sizeHeight20,
                          Text(
+                           'Experience',
+                           style: txtStyle14AndBold,
+                         ),
+                         sizeHeight15,
+                         DropdownButtonHideUnderline(
+                           child: SizedBox(
+                             width: scrSize.width,
+                             child: Container(
+                               decoration: BoxDecoration(
+                                 borderRadius: kBorderRadius10,
+                                 border: Border.all(
+                                     color: otherColor,
+                                     width: 0.2
+                                 ),
+                               ),
+                               padding: kPaddingHorizontal20,
+                               child: DropdownButton<String>(
+                                 value: selectedExperienceValue,
+                                 iconEnabledColor: mainColor,
+
+                                 hint: Text("Choose experience",style: txtStyle12AndOther,),
+                                 onChanged: (String? newValue) {
+                                   setState(() {
+                                     selectedExperienceValue = newValue!;
+                                     print(selectedExperienceValue);
+                                   });
+                                 },
+                                 items: <String>[
+                                   "one month",
+                                   "three months",
+                                   "six months",
+                                   "one year",
+                                   "two years",
+                                   "more than two years",
+                                 ].map<DropdownMenuItem<String>>((String value) {
+                                   return DropdownMenuItem<String>(
+                                     value: value,
+                                     child: Text(value,style: txtStyle14AndBlack,),
+                                   );
+                                 }).toList(),
+                               ),
+                             ),
+                           ),
+                         ),
+                         sizeHeight20,
+                         Text(
                            'Time Slot',
                            style: txtStyle14AndBold,
                          ),
@@ -455,6 +502,8 @@ class _ProfessionalSignupScreenState extends State<ProfessionalSignupScreen> {
                                      &&
                                  userImage != null
                                      &&
+                                     selectedExperienceValue != null
+                                     &&
                                      imagePicker.selectedFiles.isNotEmpty
                                      &&
                                      provider.startTime != null
@@ -531,6 +580,8 @@ class _ProfessionalSignupScreenState extends State<ProfessionalSignupScreen> {
                                            "userImage" : userImageUrl,
                                            "startTime" : provider.startTime,
                                            "endTime" : provider.endTime,
+                                           "rating" : 0,
+                                           "experience": selectedExperienceValue,
                                            "specialization" : selectedSpecializationValue,
                                          },context: context).then((value) {
                                            Utils.flushBarSuccessMessage("All Done", context);
