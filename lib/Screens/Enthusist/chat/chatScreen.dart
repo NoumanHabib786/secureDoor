@@ -5,7 +5,9 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:secure_fitness_comp/Screens/Enthusist/videoCall.dart';
 import 'package:secure_fitness_comp/resources/imagesPaths.dart';
+import 'package:secure_fitness_comp/utils/Routes/RoutesName.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../Provider/chatProvider.dart';
@@ -32,7 +34,6 @@ class ChatScreen extends StatefulWidget {
   String? enthuName;
   String? profName;
   String? profImage;
-
   int? enthuIncrement;
   int? profIncrement;
 
@@ -102,12 +103,12 @@ class _ChatScreenState extends State<ChatScreen> {
 
   update() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      if (widget.role == 'therapist') {
+      if (widget.role == 'ethusim') {
         print("in update");
         FirebaseFirestore.instance
             .collection("chat")
             .doc("${widget.profId} | ${widget.enthuId}")
-            .update({"therapistNoMessages": 0}).then((value) {
+            .update({"profNoMessages": 0}).then((value) {
           print("updated therapist messages");
         }).onError((error, stackTrace) {
           print(error);
@@ -118,7 +119,7 @@ class _ChatScreenState extends State<ChatScreen> {
         FirebaseFirestore.instance
             .collection("chat")
             .doc("${widget.profId} | ${widget.enthuId}")
-            .update({"patientNoMessages": 0}).then((value) {
+            .update({"ethuNoMessages": 0}).then((value) {
           print("updated patient messages");
         }).onError((error, stackTrace) {
           print(error);
@@ -188,6 +189,9 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 onPressed: () {
                   if (_textController.text.isNotEmpty) {
+                    print(widget.enthuId);
+                    print("widget.enthuId");
+                    print(widget.profId);
                     sendMessage.chatCollection(
                         enthuNoMessage: widget.enthuIncrement ?? 0,
                         profNoMessage: widget.profIncrement ?? 0,
@@ -206,7 +210,7 @@ class _ChatScreenState extends State<ChatScreen> {
                             .jumpTo(_scrollController.position.minScrollExtent);
                       }
                     });
-                    // _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+                    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
                     setState(() {});
                   }
                 },
@@ -274,11 +278,20 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
           actions: [
-            Container(
-              padding: EdgeInsets.only(right: 5.w),
-              child: const Icon(
-                Icons.more_vert,
-                color: AppColors.mainColor,
+            InkWell(
+              onTap: () {
+                RoutesName.push2(
+                    context,
+                    VideoCallScreen(
+                      videoId: "1",
+                    ));
+              },
+              child: Container(
+                padding: EdgeInsets.only(right: 5.w),
+                child: const Icon(
+                  CupertinoIcons.videocam_circle_fill,
+                  color: AppColors.mainColor,
+                ),
               ),
             )
           ],

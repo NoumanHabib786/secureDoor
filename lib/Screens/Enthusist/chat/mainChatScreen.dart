@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:intl_phone_field/countries.dart';
+import 'package:secure_fitness_comp/Provider/auth_provider.dart';
 import 'package:secure_fitness_comp/Provider/chatProvider.dart';
 import 'package:secure_fitness_comp/resources/fonts.dart';
 import 'package:sizer/sizer.dart';
@@ -46,8 +47,8 @@ class _MainChatScreenState extends State<MainChatScreen> {
         body: SizedBox(
             width: double.maxFinite,
             height: double.infinity,
-            child: Consumer<ChatProvider>(
-              builder: (context, value, child) {
+            child: Consumer2<ChatProvider, AuthenProvider>(
+              builder: (context, value, userData, child) {
                 return Stack(
                   children: [
                     Column(
@@ -104,9 +105,13 @@ class _MainChatScreenState extends State<MainChatScreen> {
                         ),
                         StreamBuilder(
                           stream: value.chat
-                              .where(!isProfessional ? "profId" : "enthuId",
-                                  isEqualTo:
-                                      !isProfessional ? "2" : "1")
+                              .where(
+                                  userData.enthusistModel == null
+                                      ? "profId"
+                                      : "enthuId",
+                                  isEqualTo: userData.enthusistModel == null
+                                      ? "${userData.professionalUserModel?.userId}"
+                                      : "${userData.enthusistModel?.userId}")
                               .orderBy(descending: true, "timeStemp")
                               .snapshots(),
                           builder: (context, snapshot) {
@@ -168,7 +173,7 @@ class _MainChatScreenState extends State<MainChatScreen> {
                                                       context,
                                                       ChatScreen(
                                                         enthuIncrement: chat[
-                                                                'enthuNoMessages'] ??
+                                                                'ethuNoMessages'] ??
                                                             0,
                                                         profIncrement: chat[
                                                                 'profNoMessages'] ??
@@ -179,12 +184,12 @@ class _MainChatScreenState extends State<MainChatScreen> {
                                                             chat['profImage'],
                                                         profId: chat['profId'],
                                                         enthuName:
-                                                            chat['enthuName'],
+                                                            chat['ethuName'],
                                                         enthuId:
-                                                            chat['enthuId'],
-                                                        role: isProfessional
-                                                            ? "professional"
-                                                            : "enthusist",
+                                                            chat['ethuId'],
+                                                        role: userData.enthusistModel == null
+                                                            ? "ethusist"
+                                                            : "professional",
                                                       ));
                                                 },
                                                 tileColor: Colors.white,
@@ -214,55 +219,7 @@ class _MainChatScreenState extends State<MainChatScreen> {
                                                                         0.7)),
                                                       ),
                                                       const Spacer(),
-                                                      Visibility(
-                                                        visible: isProfessional
-                                                            ? chat['profNoMessages'] !=
-                                                                    null
-                                                                ? chat['profNoMessages'] ==
-                                                                        0
-                                                                    ? false
-                                                                    : true
-                                                                : false
-                                                            : chat['enthuNoMessages'] !=
-                                                                    null
-                                                                ? chat['enthuNoMessages'] ==
-                                                                        0
-                                                                    ? false
-                                                                    : true
-                                                                : false,
-                                                        child: Container(
-                                                          height: 3.6.h,
-                                                          width: 4.w,
-                                                          // padding: EdgeInsets.all(10),
-                                                          alignment:
-                                                              Alignment.center,
-                                                          decoration:
-                                                              const BoxDecoration(
-                                                                  shape: BoxShape
-                                                                      .circle,
-                                                                  color: AppColors
-                                                                      .mainColor),
-                                                          clipBehavior:
-                                                              Clip.antiAlias,
-                                                          child: Text(
-                                                            isProfessional
-                                                                ? chat['profNoMessages'] !=
-                                                                        null
-                                                                    ? "${chat['profNoMessages']}"
-                                                                    : "0"
-                                                                : chat['enthuNoMessages'] !=
-                                                                        null
-                                                                    ? "${chat['enthuNoMessages']}"
-                                                                    : "0",
-                                                            style: TextFonts
-                                                                .textW6(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        8.sp),
-                                                          ),
-                                                        ),
-                                                      )
+
                                                     ],
                                                   ),
                                                 ),

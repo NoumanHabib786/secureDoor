@@ -439,6 +439,26 @@ class _EnthuHomeScreenState extends State<EnthuHomeScreen> {
                                                                   ),
                                                                 ],
                                                               ),
+                                                              ButtonsClass
+                                                                  .buildFillButton(
+                                                                      context:
+                                                                          context,
+                                                                      btnName:
+                                                                          "Message me",
+                                                                      function:
+                                                                          () {
+                                                                        RoutesName.push2(
+                                                                            context,
+                                                                            ChatScreen(
+                                                                              role: "ethusim",
+                                                                              enthuName: "${data.enthusistModel?.name}",
+                                                                              enthuId: "${data.enthusistModel?.userId}",
+                                                                              enthuIncrement: 0,
+                                                                              profId: "${prof['userId']}",
+                                                                              profImage: "${prof['userImage']}",
+                                                                              profName: "${prof['name']}",
+                                                                            ));
+                                                                      }),
                                                               height(2),
                                                             ],
                                                           )),

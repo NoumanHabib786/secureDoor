@@ -33,14 +33,15 @@ class ChatProvider with ChangeNotifier {
     Map<String, dynamic> outerData = {
       "timeStemp": DateTime.now().millisecondsSinceEpoch,
       "profId": professionalId,
-      "enthuId": enthuId,
+      "ethuId": enthuId,
       "profImage": profImage,
       "lastMessage": lastMessage,
-      "enthuName": enthuName,
+      "ethuName": enthuName,
       "profName": profName,
       "profNoMessages": profNoMessage,
-      "enthuNoMessages": enthuNoMessage
+      "ethuNoMessages": enthuNoMessage
     };
+    print(outerData);
     print(enthuNoMessage);
     print(profNoMessage);
     print("patNoMessage");

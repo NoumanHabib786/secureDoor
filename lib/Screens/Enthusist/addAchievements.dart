@@ -62,10 +62,16 @@ class _AddAcheivementsScreenState extends State<AddAcheivementsScreen> {
                   value
                       .postCollection(
                           title: titleController.text,
-                          userId: userData.enthusistModel?.userId,
+                          userId: userData.enthusistModel != null
+                              ? userData.enthusistModel?.userId
+                              : userData.professionalUserModel?.userId,
                           details: detailsController.text,
-                          role: userData.enthusistModel?.accountType,
-                          userName: userData.enthusistModel?.name)
+                          role: userData.enthusistModel != null
+                              ? userData.enthusistModel?.accountType
+                              : userData.professionalUserModel?.accountType,
+                          userName: userData.enthusistModel != null
+                              ? userData.enthusistModel?.name
+                              : userData.professionalUserModel?.name)
                       .then((success) {
                     if (success == 'success') {
                       titleController.clear();
@@ -82,10 +88,16 @@ class _AddAcheivementsScreenState extends State<AddAcheivementsScreen> {
                         .postCollection(
                             title: titleController.text,
                             postiImage: imageValue,
-                            role: userData.enthusistModel?.accountType,
-                            userId: userData.enthusistModel?.userId,
+                            role: userData.enthusistModel != null
+                                ? userData.enthusistModel?.accountType
+                                : userData.professionalUserModel?.accountType,
+                            userId: userData.enthusistModel != null
+                                ? userData.enthusistModel?.userId
+                                : userData.professionalUserModel?.userId,
                             details: detailsController.text,
-                            userName: userData.enthusistModel?.name)
+                            userName: userData.enthusistModel != null
+                                ? userData.enthusistModel?.name
+                                : userData.professionalUserModel?.name)
                         .then((success) {
                       if (success == 'success') {
                         titleController.clear();
@@ -99,7 +111,6 @@ class _AddAcheivementsScreenState extends State<AddAcheivementsScreen> {
                             "Post successfully", context);
                       }
                     });
-                    ;
                   });
                 }
               }
