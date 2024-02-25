@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:secure_fitness_comp/Screens/Enthusist/chat/mainChatScreen.dart';
 import 'package:secure_fitness_comp/Screens/Enthusist/postsEnthu.dart';
+import 'package:secure_fitness_comp/Screens/Enthusist/profileScreen.dart';
 import 'package:secure_fitness_comp/resources/appColors.dart';
 import 'package:secure_fitness_comp/resources/fonts.dart';
 import 'package:secure_fitness_comp/resources/height_width.dart';
@@ -77,6 +78,9 @@ class _EnthuDrawerState extends State<EnthuDrawer> {
             ),
           ),
           ListTile(
+            onTap: () {
+              RoutesName.push2(context, EnthuProfile());
+            },
             title: Text(
               "Profile",
               style: MessageFonts.notifyW5(color: Colors.white),

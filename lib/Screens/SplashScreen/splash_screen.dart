@@ -101,7 +101,10 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: AnimatedSplashScreen(
-      nextScreen: SizedBox(),
+      nextScreen: OnBoarding(),
+      duration: 5000,
+      // animationDuration: Duration(seconds: 1),
+      splashTransition: SplashTransition.fadeTransition,
       splash: ImagesPaths.logoIcon,
     ));
   }
