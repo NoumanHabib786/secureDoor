@@ -5,6 +5,7 @@ import 'package:secure_fitness_comp/Provider/auth_provider.dart';
 import 'package:secure_fitness_comp/resources/components/Buttons.dart';
 import 'package:secure_fitness_comp/resources/components/appbar.dart';
 import 'package:secure_fitness_comp/resources/fonts.dart';
+import 'package:secure_fitness_comp/resources/imagesFolder.dart';
 import 'package:secure_fitness_comp/resources/sizedbox.dart';
 import 'package:sizer/sizer.dart';
 
@@ -128,7 +129,9 @@ class _EnthuProfileState extends State<EnthuProfile> {
                                   height: 250,
                                   child: ClipRRect(
                                       borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
-                                      child: Image.network(value.professionalUserModel?.userImage ?? "",fit: BoxFit.cover,))),
+                                      child: ImagesFolder.getImage(
+                                        url:
+                                        value.professionalUserModel?.userImage ?? ""))),
                             ],
                           ),
                         )
@@ -160,10 +163,14 @@ class _EnthuProfileState extends State<EnthuProfile> {
                                       itemBuilder: (context,index){
                                     return  value.professionalUserModel?.certificateImageUrls[index].toString().contains("png") == true? ClipRRect(
                                         borderRadius: BorderRadius.vertical(bottom: Radius.circular(12)),
-                                        child:  Image.network(
-                                          value.professionalUserModel?.certificateImageUrls[index],
+                                        child:  SizedBox(
                                           height: 250,
-                                          fit: BoxFit.cover,)) : Text("${value.professionalUserModel?.certificateImageUrls.length} Documents are available");
+                                          // fit: BoxFit.cover,
+                                          child: ImagesFolder.getImage(
+                                            url:
+                                            value.professionalUserModel?.certificateImageUrls[index],
+                                            ),
+                                        )) : Text("${value.professionalUserModel?.certificateImageUrls.length} Documents are available");
                                   })),
                             ],
                           ),

@@ -15,6 +15,7 @@ import 'package:secure_fitness_comp/utils/Routes/RoutesName.dart';
 import 'package:secure_fitness_comp/utils/notficationsBar.dart';
 
 import '../Screens/AuthScreen/Signup/step_three_email_verified.dart';
+import '../Screens/Professionals/professional_home_screen.dart';
 import '../models/enthusistModel.dart';
 
 class AuthenProvider extends ChangeNotifier {
@@ -75,14 +76,14 @@ class AuthenProvider extends ChangeNotifier {
                   notifyListeners();
                   Utils.flushBarSuccessMessage("Enthusiast", context);
                   RoutesName.remove(context, RoutesName.EnthuHomeScreen);
-                } else if (value['accountType'] == 'Professional') {
+                } else if (value['accountType'] == 'Professional'&& value.get("specialization") != null) {
                   print(value.data());
                   Map data = {};
                   professionalUserModel =
                       ProfessionalUserModel.fromJson(value.data()!);
                   notifyListeners();
                   Utils.flushBarSuccessMessage("Professional", context);
-                  RoutesName.remove(context, RoutesName.EnthuHomeScreen);
+                  RoutesName.remove2(context, ProfessionalHomeScreen());
                 } else {
                   if (value.get("name") == null ||
                       value.get("name").toString().isEmpty) {
@@ -181,7 +182,7 @@ class AuthenProvider extends ChangeNotifier {
               notifyListeners();
               chatTopicSubscribe(
                   userID: "${enthusistModel?.userId}", isSubscribe: true);
-            } else if (value['accountType'] == 'Professional') {
+            } else if (value['accountType'] == 'Professional' && value.get("specialization") != null) {
               print(value.data());
               Map data = {};
               professionalUserModel =

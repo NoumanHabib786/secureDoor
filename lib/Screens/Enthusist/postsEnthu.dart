@@ -155,8 +155,15 @@ class _PostEnthuScreenState extends State<PostEnthuScreen> {
                           print(postsList.map((e) => e.get("userId")));
                           print("okkk2");
                           print(authProvider.enthusistModel?.followList);
+                          List<QueryDocumentSnapshot> posts = [];
+                          if(authProvider.professionalUserModel == null){
 
-                          List<QueryDocumentSnapshot> posts = postsList.where((element) => authProvider.enthusistModel!.followList.any((element2) => authProvider.enthusistModel!.followList.contains(element.get("userId")))).toList();
+                           posts = postsList.where((element) => authProvider.enthusistModel!.followList.any((element2) => authProvider.enthusistModel!.followList.contains(element.get("userId")))).toList();
+                          }else{
+                            // setState(() {
+                              posts = postsList;
+                            // });
+                          }
                           print("okkk");
                           print(posts.length);
                           return posts.isEmpty

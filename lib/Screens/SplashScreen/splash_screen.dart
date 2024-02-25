@@ -17,6 +17,7 @@ import '../AuthScreen/Signup/age_height_weigth_info.dart';
 import '../AuthScreen/Signup/bodyType_level.dart';
 import '../AuthScreen/Signup/professional_signup.dart';
 import '../AuthScreen/onboarding.dart';
+import '../Professionals/professional_home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -52,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
                         builder: (context) => AgeHeightWeightInfo()),
                     (route) => false);
               } else {
-                if (value['accountType'] == 'Enthusiast') {
+                if (value['accountType'] == 'Enthusiast' ) {
                   print(value.data());
                   Map data = {};
                   auths.enthusistModel = EnthusistModel.fromJson(value.data()!);
@@ -63,7 +64,7 @@ class _SplashScreenState extends State<SplashScreen> {
                   Map data = {};
                   auths.professionalUserModel = ProfessionalUserModel.fromJson(value.data()!);
                   setState(() {});
-                  RoutesName.remove(context, RoutesName.EnthuHomeScreen);
+                  RoutesName.remove2(context, ProfessionalHomeScreen());
                 } else {
                   if (value.get("name") == null ||
                       value.get("name").toString().isEmpty) {
