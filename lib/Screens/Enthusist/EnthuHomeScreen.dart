@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:secure_fitness_comp/Provider/auth_provider.dart';
+import 'package:secure_fitness_comp/Screens/Enthusist/Nutration/nutrationScreen.dart';
+import 'package:secure_fitness_comp/Screens/Enthusist/activityPlan/activityPlan.dart';
+import 'package:secure_fitness_comp/Screens/Enthusist/professional.dart';
 import 'package:secure_fitness_comp/Screens/Enthusist/workOut/workOutScreen.dart';
 import 'package:secure_fitness_comp/resources/components/Buttons.dart';
 import 'package:secure_fitness_comp/resources/components/appbar.dart';
@@ -13,6 +17,7 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import '../../resources/appColors.dart';
 import '../../resources/fonts.dart';
 import '../../resources/height_width.dart';
+import '../../resources/imagesFolder.dart';
 import '../../utils/Routes/RoutesName.dart';
 import 'EnuthuDrawer.dart';
 import 'chat/chatScreen.dart';
@@ -50,7 +55,11 @@ class _EnthuHomeScreenState extends State<EnthuHomeScreen> {
         appBar: app_bar(
             context: context,
             title: "Fitness",
-            withoutLeading: Icon(Icons.menu)),
+            withoutLeading: InkWell(
+                onTap: () {
+                  _scaffoldKey.currentState!.openDrawer();
+                },
+                child: const Icon(Icons.menu))),
         drawer: const EnthuDrawer(),
         body: Consumer<AuthenProvider>(
           builder: (context, data, child) {
@@ -63,7 +72,7 @@ class _EnthuHomeScreenState extends State<EnthuHomeScreen> {
                     children: [
                       height(2),
                       Padding(
-                        padding: EdgeInsets.only(left: 18),
+                        padding: const EdgeInsets.only(left: 18),
                         child: Text(
                           "Hi , ${data.enthusistModel?.name ?? data.professionalUserModel?.name}",
                           style: MessageFonts.notifyW5(fontSize: 15.sp),
@@ -134,7 +143,7 @@ class _EnthuHomeScreenState extends State<EnthuHomeScreen> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Text("Work-out Plan"),
+                                            const Text("Work-out Plan"),
                                             Center(
                                                 child: Image.asset(
                                               "assets/icons/workOut.png",
@@ -147,24 +156,32 @@ class _EnthuHomeScreenState extends State<EnthuHomeScreen> {
                                   ),
                                   width(5),
                                   Expanded(
-                                    child: Container(
-                                      padding: EdgeInsets.all(2.h),
-                                      height: 15.h,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.umer2,
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text("Meal Plan"),
-                                          Center(
-                                              child: Image.asset(
-                                            "assets/icons/meal.png",
-                                            height: 5.h,
-                                          ))
-                                        ],
+                                    child: InkWell(
+                                      onTap: () {
+                                        RoutesName.push2(
+                                            context, NutrationScreen());
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(2.h),
+                                        height: 15.h,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.umer2,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            const Text(
+                                                "Meal and Nutrition Plan"),
+                                            Center(
+                                                child: Image.asset(
+                                              "assets/icons/meal.png",
+                                              height: 5.h,
+                                            ))
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -173,206 +190,281 @@ class _EnthuHomeScreenState extends State<EnthuHomeScreen> {
                               height(2),
                               Row(
                                 children: [
+                                  // Expanded(
+                                  //   child: InkWell(
+                                  //
+                                  //     child: Container(
+                                  //       padding: EdgeInsets.all(2.h),
+                                  //       height: 15.h,
+                                  //       decoration: BoxDecoration(
+                                  //         color: AppColors.umer3,
+                                  //         borderRadius:
+                                  //             BorderRadius.circular(12),
+                                  //       ),
+                                  //       child: Column(
+                                  //         mainAxisAlignment:
+                                  //             MainAxisAlignment.spaceEvenly,
+                                  //         children: [
+                                  //           const Text("Nutrition Plan"),
+                                  //           Center(
+                                  //               child: Image.asset(
+                                  //             "assets/icons/nutrition.png",
+                                  //             height: 5.h,
+                                  //           ))
+                                  //         ],
+                                  //       ),
+                                  //     ),
+                                  //   ),
+                                  // ),
+                                  // width(5),
                                   Expanded(
-                                    child: Container(
-                                      padding: EdgeInsets.all(2.h),
-                                      height: 15.h,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.umer3,
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text("Nutrition Plan"),
-                                          Center(
-                                              child: Image.asset(
-                                            "assets/icons/nutrition.png",
-                                            height: 5.h,
-                                          ))
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  width(5),
-                                  Expanded(
-                                    child: Container(
-                                      padding: EdgeInsets.all(2.h),
-                                      height: 15.h,
-                                      decoration: BoxDecoration(
-                                        color: AppColors.umer4,
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text("Activity Plan"),
-                                          Center(
-                                              child: Image.asset(
-                                            "assets/icons/activity.png",
-                                            height: 5.h,
-                                          ))
-                                        ],
+                                    child: InkWell(
+                                      onTap: () {
+                                        RoutesName.push2(
+                                            context, ActivityPlanScreen());
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.all(2.h),
+                                        height: 15.h,
+                                        decoration: BoxDecoration(
+                                          color: AppColors.umer4,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            const Text("Activity Plan"),
+                                            Center(
+                                                child: Image.asset(
+                                              "assets/icons/activity.png",
+                                              height: 5.h,
+                                            ))
+                                          ],
+                                        ),
                                       ),
                                     ),
                                   ),
                                 ],
                               ),
                               height(3),
-                              Text(
-                                "Our top Professionals",
-                                style: MessageFonts.notifyW5(),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Our top Professionals",
+                                    style: MessageFonts.notifyW5(),
+                                  ),
+                                  Spacer(),
+                                  InkWell(
+                                    onTap: () {
+                                      RoutesName.push2(
+                                          context, ProfessionalsList());
+                                    },
+                                    child: Text(
+                                      "View All",
+                                      style: MessageFonts.notifySimple(
+                                          color: AppColors.mainColor),
+                                    ),
+                                  )
+                                ],
                               ),
                               height(1.5),
-                              SizedBox(
-                                height: 20.h,
-                                width: 100.w,
-                                child: ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: 3,
-                                  padding: EdgeInsets.zero,
-                                  itemBuilder: (context, index) {
-                                    return Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 3.0),
-                                      child: InkWell(
-                                        onTap: () {
-                                          bool isProfessional = false;
-                                          RoutesName.push2(
-                                              context,
-                                              ChatScreen(
-                                                enthuIncrement: 0,
-                                                profIncrement: 0,
-                                                profName: "Secure",
-                                                profImage: "image",
-                                                profId: "2",
-                                                enthuName: "Nouman",
-                                                enthuId:
-                                                    "${data.enthusistModel}",
-                                                role: data.enthusistModel
-                                                            ?.accountType ==
-                                                        "Enthusiast"
-                                                    ? "enthusist"
-                                                    : "professional",
-                                              ));
-                                          isProfessional = true;
-                                        },
-                                        child: Card(
-                                          elevation: 0,
-                                          color: Colors.grey.shade100,
-                                          shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(12)),
-                                          child: Container(
-                                              width: 85.w,
-                                              padding: EdgeInsets.all(2.h),
-                                              decoration: BoxDecoration(
-                                                  // color: Colors.grey.shade300,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          12)),
-                                              child: Column(
-                                                children: [
-                                                  Row(
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .start,
-                                                    children: [
-                                                      Container(
-                                                          height: 5.h,
-                                                          width: 10.w,
-                                                          clipBehavior: Clip
-                                                              .antiAlias,
+                              StreamBuilder(
+                                stream: FirebaseFirestore.instance
+                                    .collection("users")
+                                    .where("accountType",
+                                        isEqualTo: "Professional")
+                                    .snapshots(),
+                                builder: (context, snapshot) {
+                                  if (snapshot.hasData) {
+                                    List<QueryDocumentSnapshot> professionals =
+                                        snapshot.data?.docs
+                                                .cast<QueryDocumentSnapshot>()
+                                                .toList() ??
+                                            [];
+                                    return professionals.isEmpty
+                                        ? Center(
+                                            child: Text(
+                                              "Not found",
+                                              style:
+                                                  MessageFonts.notifySimple(),
+                                            ),
+                                          )
+                                        : SizedBox(
+                                            height: 25.h,
+                                            width: 100.w,
+                                            child: ListView.builder(
+                                              scrollDirection: Axis.horizontal,
+                                              itemCount: 1,
+                                              padding: EdgeInsets.zero,
+                                              itemBuilder: (context, index) {
+                                                var prof = professionals[index];
+                                                return Padding(
+                                                  padding: const EdgeInsets
+                                                          .symmetric(
+                                                      horizontal: 3.0),
+                                                  child: InkWell(
+                                                    onTap: () {
+                                                      RoutesName.push2(
+                                                          context,
+                                                          ChatScreen(
+                                                            enthuIncrement: 0,
+                                                            profIncrement: 0,
+                                                            profName:
+                                                                "${prof['name']}",
+                                                            profImage:
+                                                                "${prof['userImage']}",
+                                                            profId:
+                                                                "${prof['userId']}",
+                                                            enthuName:
+                                                                "${data.enthusistModel?.name}",
+                                                            enthuId:
+                                                                "${data.enthusistModel?.userId}",
+                                                            role: "enthusist",
+                                                          ));
+                                                    },
+                                                    child: Card(
+                                                      elevation: 0,
+                                                      color:
+                                                          Colors.grey.shade100,
+                                                      shape:
+                                                          RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12)),
+                                                      child: Container(
+                                                          width: 85.w,
+                                                          padding:
+                                                              EdgeInsets.all(
+                                                                  2.h),
                                                           decoration:
                                                               BoxDecoration(
-                                                                  shape: BoxShape
-                                                                      .circle),
-                                                          child: Image.asset(
-                                                            ImagesPaths.demo,
-                                                            fit: BoxFit.cover,
-                                                          )
-                                                          // ImagesFolder
-                                                          //     .getImage(
-                                                          //     url:
-                                                          //     "${ImagesFolder.therapist}${therapist.image}"),
-                                                          ),
-                                                      width(2),
-                                                      Expanded(
-                                                        child: Column(
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            height(1),
-                                                            Text(
-                                                              "Secure Door",
-                                                              style: MessageFonts
-                                                                  .notifyW6(),
-                                                            ),
-                                                            height(0.5),
-                                                            Text(
-                                                              "Professional in dummy",
-                                                              style: MessageFonts
-                                                                  .notifySimple(),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      width(2),
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            "5.0",
-                                                            style: MessageFonts
-                                                                .notifyW5(),
-                                                          ),
-                                                          width(1),
-                                                          Icon(
-                                                            CupertinoIcons
-                                                                .star_fill,
-                                                            color: AppColors
-                                                                .orangeDark,
-                                                            size: 2.3.h,
-                                                          )
-                                                        ],
-                                                      )
-                                                    ],
+                                                                  // color: Colors.grey.shade300,
+                                                                  borderRadius:
+                                                                      BorderRadius
+                                                                          .circular(
+                                                                              12)),
+                                                          child: Column(
+                                                            children: [
+                                                              Row(
+                                                                crossAxisAlignment:
+                                                                    CrossAxisAlignment
+                                                                        .start,
+                                                                children: [
+                                                                  Container(
+                                                                    height: 5.h,
+                                                                    width: 10.w,
+                                                                    clipBehavior:
+                                                                        Clip.antiAlias,
+                                                                    decoration:
+                                                                        const BoxDecoration(
+                                                                            shape:
+                                                                                BoxShape.circle),
+                                                                    child: ImagesFolder
+                                                                        .getImage(
+                                                                            url:
+                                                                                "${prof['userImage']}"),
+                                                                  ),
+                                                                  width(2),
+                                                                  Expanded(
+                                                                    child:
+                                                                        Column(
+                                                                      crossAxisAlignment:
+                                                                          CrossAxisAlignment
+                                                                              .start,
+                                                                      children: [
+                                                                        height(
+                                                                            1),
+                                                                        Text(
+                                                                          "${prof['name']}",
+                                                                          style:
+                                                                              MessageFonts.notifyW6(),
+                                                                        ),
+                                                                        height(
+                                                                            0.5),
+                                                                        Text(
+                                                                          "Professional in ${prof['specialization']}",
+                                                                          maxLines:
+                                                                              1,
+                                                                          style:
+                                                                              MessageFonts.notifySimple(),
+                                                                        ),
+                                                                      ],
+                                                                    ),
+                                                                  ),
+                                                                  width(2),
+                                                                  Row(
+                                                                    children: [
+                                                                      Text(
+                                                                        "${prof['rating']}",
+                                                                        style: MessageFonts
+                                                                            .notifyW5(),
+                                                                      ),
+                                                                      width(1),
+                                                                      Icon(
+                                                                        CupertinoIcons
+                                                                            .star_fill,
+                                                                        color: AppColors
+                                                                            .orangeDark,
+                                                                        size: 2.3
+                                                                            .h,
+                                                                      )
+                                                                    ],
+                                                                  )
+                                                                ],
+                                                              ),
+                                                              height(2),
+                                                              Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Text(
+                                                                    "Experience",
+                                                                    style: MessageFonts.notifySimple(
+                                                                        fontSize: 10
+                                                                            .sp,
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                  Text(
+                                                                    "${prof['experience']}",
+                                                                    style: MessageFonts.notifyW6(
+                                                                        fontSize: 12
+                                                                            .sp,
+                                                                        color: Colors
+                                                                            .black),
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                              height(2),
+                                                            ],
+                                                          )),
+                                                    ),
                                                   ),
-                                                  height(2),
-                                                  Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      Text(
-                                                        "Experience",
-                                                        style: MessageFonts
-                                                            .notifySimple(
-                                                                fontSize: 10.sp,
-                                                                color: Colors
-                                                                    .black),
-                                                      ),
-                                                      Text(
-                                                        "2 years",
-                                                        style: MessageFonts
-                                                            .notifyW6(
-                                                                fontSize: 12.sp,
-                                                                color: Colors
-                                                                    .black),
-                                                      ),
-                                                    ],
-                                                  ),
-                                                  height(2),
-                                                ],
-                                              )),
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ),
+                                                );
+                                              },
+                                            ),
+                                          );
+                                  } else if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return Center(child: loading());
+                                  } else if (!snapshot.hasData) {
+                                    return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 20.0),
+                                        child: Center(
+                                          child: Text(
+                                            "No professional found",
+                                            style: MessageFonts.notifyW5(),
+                                          ),
+                                        ));
+                                  }
+                                  return Container();
+                                },
+                              )
                             ],
                           ),
                         ),

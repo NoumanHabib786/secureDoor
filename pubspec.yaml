@@ -42,8 +42,9 @@ dependencies:
 #  page_transition: ^2.1.0
   device_preview: ^1.1.0
 #  expandable_text: ^2.3.0
-#  horizontal_week_calendar: ^0.0.7
-#  date_picker_timeline: ^1.2.3
+  horizontal_week_calendar: ^0.0.7
+  date_picker_timeline: ^1.2.3
+  calender_picker: ^2.0.1
   intl: ^0.17.0
   another_flushbar: ^1.12.30
 #  flutter_multi_formatter: ^2.11.14

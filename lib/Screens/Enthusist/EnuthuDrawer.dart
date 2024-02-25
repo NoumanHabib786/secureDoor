@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:secure_fitness_comp/Provider/auth_provider.dart';
 import 'package:secure_fitness_comp/Screens/Enthusist/chat/mainChatScreen.dart';
 import 'package:secure_fitness_comp/Screens/Enthusist/postsEnthu.dart';
 import 'package:secure_fitness_comp/Screens/Enthusist/profileScreen.dart';
@@ -94,8 +96,13 @@ class _EnthuDrawerState extends State<EnthuDrawer> {
           Spacer(),
           ListTile(
             onTap: () async {
-              RoutesName.remove(context, RoutesName.splashScreen);
+              var pro = Provider.of<AuthenProvider>(context, listen: false);
               await FirebaseAuth.instance.signOut();
+              setState(() {
+                pro.professionalUserModel = null;
+                pro.enthusistModel = null;
+              });
+              RoutesName.remove(context, RoutesName.splashScreen);
             },
             title: Text(
               "Logout",

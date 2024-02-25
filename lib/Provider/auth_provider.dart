@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:secure_fitness_comp/Screens/AuthScreen/Signup/age_height_weigth_info.dart';
@@ -74,10 +75,11 @@ class AuthenProvider extends ChangeNotifier {
                   notifyListeners();
                   Utils.flushBarSuccessMessage("Enthusiast", context);
                   RoutesName.remove(context, RoutesName.EnthuHomeScreen);
-                }else if (value['accountType'] == 'Professional') {
+                } else if (value['accountType'] == 'Professional') {
                   print(value.data());
                   Map data = {};
-                  professionalUserModel = ProfessionalUserModel.fromJson(value.data()!);
+                  professionalUserModel =
+                      ProfessionalUserModel.fromJson(value.data()!);
                   notifyListeners();
                   Utils.flushBarSuccessMessage("Professional", context);
                   RoutesName.remove(context, RoutesName.EnthuHomeScreen);
@@ -177,11 +179,17 @@ class AuthenProvider extends ChangeNotifier {
               Map data = {};
               enthusistModel = EnthusistModel.fromJson(value.data()!);
               notifyListeners();
-            }else if (value['accountType'] == 'Professional') {
+              chatTopicSubscribe(
+                  userID: "${enthusistModel?.userId}", isSubscribe: true);
+            } else if (value['accountType'] == 'Professional') {
               print(value.data());
               Map data = {};
-              professionalUserModel = ProfessionalUserModel.fromJson(value.data()!);
+              professionalUserModel =
+                  ProfessionalUserModel.fromJson(value.data()!);
               notifyListeners();
+              chatTopicSubscribe(
+                  userID: "${professionalUserModel?.userId}",
+                  isSubscribe: true);
             } else {
               if (value.get("name") == null ||
                   value.get("name").toString().isEmpty) {
@@ -360,5 +368,16 @@ class AuthenProvider extends ChangeNotifier {
     }).onError((error, stackTrace) {
       Utils.flushBarErrorMessage(error.toString(), context);
     });
+  }
+
+  chatTopicSubscribe({required String userID, required bool isSubscribe}) {
+    if (isSubscribe) {
+      print("Here in $userID");
+
+      FirebaseMessaging.instance.subscribeToTopic("chat$userID");
+    } else {
+      print("Here in else $userID");
+      FirebaseMessaging.instance.unsubscribeFromTopic("chat$userID");
+    }
   }
 }
